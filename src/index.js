@@ -21,7 +21,7 @@ client.on('ready', () => {
 client.on('messageCreate', async (message) => {
 	const handleMessage = message.content.toLowerCase();
 	if (handleMessage.indexOf(config.prefix) === 0) {
-		
+
 		const command = handleMessage.split('!');
 		if (command[1].indexOf('thongke') !== -1) {
 			const pagePart = command[1].split(' ')[1];
@@ -49,7 +49,8 @@ client.on('messageCreate', async (message) => {
 				break;
 			}
 		}
-}});
+	}
+});
 client.on('interactionCreate', async (interaction) => {
 	if (!interaction.isCommand()) return;
 
@@ -62,3 +63,15 @@ client.on('interactionCreate', async (interaction) => {
 });
 
 client.login(process.env.TOKEN);
+
+import express from "express";
+const app = express()
+const port = process.env.PORT || 3000;
+
+app.get('/', (req, res) => {
+	res.send('Hello World!')
+})
+
+app.listen(port, () => {
+	console.log(`Example app listening on port ${port}`)
+})
