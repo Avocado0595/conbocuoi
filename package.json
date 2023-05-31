@@ -11,7 +11,7 @@
     "build": "npm install",
     "start": "node src/index.js",
     "lint": "npx eslint ./src && npx prettier ./src",
-    "lint-fix": "npx eslint --fix ./src && npx prettier --write ./src"
+    "lint-fix": "npx eslint --fix ./src && npx prettier --write ./src",
   },
   "keywords": [],
   "author": "",
