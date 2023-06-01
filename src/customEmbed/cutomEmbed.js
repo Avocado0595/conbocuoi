@@ -1,7 +1,7 @@
 import { MessageEmbed } from 'discord.js';
 
 const avatarLink =
-		'https://cdn.dribbble.com/users/1275/screenshots/2154492/media/7582ab673004df06fbac8dbef7211ad0.png',
+	'https://cdn.dribbble.com/users/1275/screenshots/2154492/media/7582ab673004df06fbac8dbef7211ad0.png',
 	inviteLink =
 		'https://discord.com/api/oauth2/authorize?client_id=910123710638333983&permissions=274877974528&scope=bot';
 
@@ -20,8 +20,8 @@ export const helpEmbed = () =>
 		.addField('b!xemkho', 'Xem kho bạn có gì nào?')
 		.addField('b!thongke', 'Xem bảng thống kê')
 		.addField('b!anco', 'Cho bò ăn để có sữa nhé')
-		.addField('Github', 'https://github.com/Avocado0595/bot-bo-sua')
-		.setURL('https://github.com/Avocado0595/bot-bo-sua')
+		.addField('Github', 'https://github.com/Avocado0595/conbocuoi')
+		.setURL('https://github.com/Avocado0595/conbocuoi')
 		.setTimestamp()
 		.setFooter(
 			'Bot được tạo ra bởi ThanhXuan',
@@ -37,8 +37,7 @@ export const statsEmbed = (user, userRank, top, page, totalPage) =>
 		.setDescription(top)
 		.setThumbnail(avatarLink)
 		.addField(
-			`Thứ hạng của bạn: ${userRank} - ${
-				user ? user.totalMilk : 0
+			`Thứ hạng của bạn: ${userRank} - ${user ? user.totalMilk : 0
 			} lít sữa`,
 			`Hãy tiếp tục vắt sữa nhé :"> \nTrang: ${page}/${totalPage} - b!thongke ${'số trang'}`
 		)
