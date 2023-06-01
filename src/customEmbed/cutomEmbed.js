@@ -8,11 +8,11 @@ const avatarLink =
 export const helpEmbed = () =>
 	new MessageEmbed()
 		.setColor('#0099ff')
-		.setTitle('Bot Bò Sữa')
+		.setTitle('Bot Con Bò Cười')
 		.setURL(inviteLink)
-		.setAuthor({ name: 'Bot Bò Sữa', iconURL: avatarLink, url: inviteLink })
+		.setAuthor({ name: 'Bot Con Bò Cười', iconURL: avatarLink, url: inviteLink })
 		.setDescription(
-			'Chào mừng đến với Bot Bò Sữa!\nXem danh sách lệnh dưới đây nhé!'
+			'Chào mừng đến với Bot Con Bò Cười!\nXem danh sách lệnh dưới đây nhé!'
 		)
 		.setThumbnail(avatarLink)
 		.addField('b!help', 'Gọi ra bảng giúp đỡ này')
@@ -20,6 +20,7 @@ export const helpEmbed = () =>
 		.addField('b!xemkho', 'Xem kho bạn có gì nào?')
 		.addField('b!thongke', 'Xem bảng thống kê')
 		.addField('b!anco', 'Cho bò ăn để có sữa nhé')
+		.addField('b!xemmeo', 'Random ra ảnh con mòe')
 		.addField('Github', 'https://github.com/Avocado0595/conbocuoi')
 		.setURL('https://github.com/Avocado0595/conbocuoi')
 		.setTimestamp()
@@ -33,7 +34,7 @@ export const statsEmbed = (user, userRank, top, page, totalPage) =>
 		.setColor('#0099ff')
 		.setTitle('Bảng thống kê (toàn trái đất)')
 		.setURL(inviteLink)
-		.setAuthor({ name: 'Bot Bò Sữa', iconURL: avatarLink, url: inviteLink })
+		.setAuthor({ name: 'Bot Con Bò Cười', iconURL: avatarLink, url: inviteLink })
 		.setDescription(top)
 		.setThumbnail(avatarLink)
 		.addField(

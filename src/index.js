@@ -7,7 +7,7 @@ import { helpEmbed } from './customEmbed/cutomEmbed.js';
 import rank from './commands/rank.js';
 import status from './commands/status.js';
 import config from './config/config.js';
-
+import randomCat from './commands/randomCat.js';
 const client = new Client({
 	intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
 });
@@ -46,6 +46,10 @@ client.on('messageCreate', async (message) => {
 
 			case 'anco': {
 				await feed(message);
+				break;
+			}
+			case 'xemmeo': {
+				await randomCat(message);
 				break;
 			}
 		}
