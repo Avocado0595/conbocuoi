@@ -17,26 +17,31 @@ export const updateUser = async (id, updateUser) => {
 };
 
 export const getTopNUser = async (userId, page, client) => {
-	const userPerPage = 10;
-	const sortedUserList = await UserModel.find().sort({ totalMilk: -1 });
-	const totalPage = Math.round(sortedUserList.length / userPerPage);
-	const n = page > totalPage ? totalPage : page;
-	const userRank = await getUserRank(userId, sortedUserList);
-	const statRank = sortedUserList.slice((n - 1)*userPerPage,n*userPerPage);
-	let statBoard = '';
-	let fetchList = [];
-	for (let i = 0; i < statRank.length; i++) {
-		fetchList.push(
-			client.users.fetch(statRank[i].userId).catch(console.error)
-		);
-	}
-	const statList = await Promise.all(fetchList);
-	for (let i = 0; i < statList.length; i++) {
-		statBoard += `${(n - 1) * userPerPage + i + 1}. ${statList[i].tag} - ${
-			statRank[i].totalMilk
-		} lít sữa\n`;
-	}
-	return { statBoard, userRank, totalPage };
+    const userPerPage = 10;
+    const sortedUserList = await UserModel.find().sort({ totalMilk: -1 });
+    const totalPage = Math.ceil(sortedUserList.length / userPerPage);
+    const n = page > totalPage ? totalPage : page;
+    const userRank = await getUserRank(userId, sortedUserList);
+    const startIndex = (n - 1) * userPerPage;
+    const endIndex = n * userPerPage;
+    const statRank = sortedUserList.slice(startIndex, endIndex);
+    let statBoard = '';
+    let fetchList = [];
+    for (let i = 0; i < statRank.length; i++) {
+        try {
+            const user = await client.users.fetch(statRank[i].userId);
+            fetchList.push(user);
+        } catch (error) {
+            console.error(`${statRank[i].userId}: ${error}`);
+        }
+    }
+    const statList = fetchList.filter((user) => !!user);
+    for (let i = 0; i < statList.length; i++) {
+        statBoard += `${startIndex + i + 1}. ${statList[i].tag} - ${
+            statRank[i].totalMilk
+        } lít sữa\n`;
+    }
+    return { statBoard, userRank, totalPage };
 };
 
 export const getUserRank = async (userId, sortedUserList) => {

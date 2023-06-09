@@ -8,6 +8,7 @@ import rank from './commands/rank.js';
 import status from './commands/status.js';
 import config from './config/config.js';
 import randomCat from './commands/randomCat.js';
+import express from 'express';
 const client = new Client({
 	intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
 });
@@ -68,14 +69,14 @@ client.on('interactionCreate', async (interaction) => {
 
 client.login(process.env.TOKEN);
 
-import express from "express";
-const app = express()
+
+const app = express();
 const port = process.env.PORT || 3000;
 
 app.get('/', (req, res) => {
-	res.send('Hello Conbocuoi!')
-})
+	res.send('Hello Conbocuoi!');
+});
 
 app.listen(port, () => {
-	console.log(`Example app listening on port ${port}`)
-})
+	console.log(`Example app listening on port ${port}`);
+});
