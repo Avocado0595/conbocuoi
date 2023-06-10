@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import { Client, Intents } from 'discord.js';
+import { Client, GatewayIntentBits, Partials } from 'discord.js';
 import connect from './database/database.js';
 import milk from './commands/milk.js';
 import feed from './commands/feed.js';
@@ -10,7 +10,13 @@ import config from './config/config.js';
 import randomCat from './commands/randomCat.js';
 import express from 'express';
 const client = new Client({
-	intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
+	intents: [
+		GatewayIntentBits.Guilds,
+		GatewayIntentBits.GuildMessages,
+		GatewayIntentBits.MessageContent,
+		GatewayIntentBits.GuildMembers,
+	],
+	partials: [Partials.Channel]
 });
 
 dotenv.config();
