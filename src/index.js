@@ -9,6 +9,7 @@ import status from './commands/status.js';
 import config from './config/config.js';
 import randomCat from './commands/randomCat.js';
 import express from 'express';
+import cors from 'cors';
 const client = new Client({
 	intents: [
 		GatewayIntentBits.Guilds,
@@ -80,7 +81,7 @@ client.login(process.env.TOKEN);
 
 const app = express();
 const port = process.env.PORT || 3000;
-
+app.use(cors());
 app.get('/', (req, res) => {
 	res.send('Hello Conbocuoi!');
 });
