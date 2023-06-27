@@ -27,43 +27,50 @@ client.on('ready', () => {
 	console.log(`Logged in as ${client.user.tag}!`);
 });
 client.on('messageCreate', async (message) => {
-	message.channel.sendTyping();
-	const handleMessage = message.content.toLowerCase();
-	if (handleMessage.indexOf(config.prefix) === 0) {
+	try {
 
-		const command = handleMessage.split('!');
-		if (command[1].indexOf('thongke') !== -1) {
-			const pagePart = command[1].split(' ')[1];
-			const page = Math.abs(Number.parseInt(pagePart)) || 1;
-			await rank(message, client, page);
-		}
+		const handleMessage = message.content.toLowerCase();
+		if (handleMessage.indexOf(config.prefix) === 0) {
 
-		switch (command[1]) {
-			case 'help': {
-				message.channel.send({ embeds: [helpEmbed()] });
-				break;
+			const command = handleMessage.split('!');
+			if (command[1].indexOf('thongke') !== -1) {
+				const pagePart = command[1].split(' ')[1];
+				const page = Math.abs(Number.parseInt(pagePart)) || 1;
+				await rank(message, client, page);
 			}
+			message.channel.sendTyping();
+			switch (command[1]) {
+				case 'help': {
+					message.channel.send({ embeds: [helpEmbed()] });
+					break;
+				}
 
-			case 'vatsua': {
-				await milk(message);
-				break;
-			}
+				case 'vatsua': {
+					await milk(message);
+					break;
+				}
 
-			case 'xemkho': {
-				await status(message);
-				break;
-			}
+				case 'xemkho': {
+					await status(message);
+					break;
+				}
 
-			case 'anco': {
-				await feed(message);
-				break;
-			}
-			case 'xemmeo': {
-				await randomCat(message);
-				break;
+				case 'anco': {
+					await feed(message);
+					break;
+				}
+				case 'xemmeo': {
+					await randomCat(message);
+					break;
+				}
 			}
 		}
 	}
+	catch {
+		message.channel.sendTyping();
+		message.reply("Ôi không! Hình như bò đang không ổn, chờ thằng chủ bỏ fix lại nhé :\">");
+	}
+
 });
 client.on('interactionCreate', async (interaction) => {
 	if (!interaction.isCommand()) return;
