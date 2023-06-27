@@ -8,6 +8,7 @@ const rank = async (message, client, page) => {
 		page,
 		client
 	);
+
 	message.channel.send({
 		embeds: [
 			statsEmbed(

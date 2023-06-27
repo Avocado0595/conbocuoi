@@ -26,6 +26,7 @@ client.on('ready', () => {
 	console.log(`Logged in as ${client.user.tag}!`);
 });
 client.on('messageCreate', async (message) => {
+	message.channel.sendTyping();
 	const handleMessage = message.content.toLowerCase();
 	if (handleMessage.indexOf(config.prefix) === 0) {
 
@@ -35,6 +36,7 @@ client.on('messageCreate', async (message) => {
 			const page = Math.abs(Number.parseInt(pagePart)) || 1;
 			await rank(message, client, page);
 		}
+
 		switch (command[1]) {
 			case 'help': {
 				message.channel.send({ embeds: [helpEmbed()] });

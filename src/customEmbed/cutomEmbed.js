@@ -1,16 +1,15 @@
 import { EmbedBuilder } from 'discord.js';
 
 const avatarLink =
-	'https://cdn.dribbble.com/users/1275/screenshots/2154492/media/7582ab673004df06fbac8dbef7211ad0.png',
-	inviteLink =
-		'https://discord.com/api/oauth2/authorize?client_id=910123710638333983&permissions=274877974528&scope=bot';
+	'https://cdn.dribbble.com/users/1275/screenshots/2154492/media/7582ab673004df06fbac8dbef7211ad0.png'
+
 
 export const helpEmbed = () =>
 	new EmbedBuilder()
-		.setColor(0,153,255)
+		.setColor(0, 153, 255)
 		.setTitle('Bot Con Bò Cười')
-		.setURL(inviteLink)
-		.setAuthor({ name: 'Bot Con Bò Cười', iconURL: avatarLink, url: inviteLink })
+
+		.setAuthor({ name: 'Bot Con Bò Cười', iconURL: avatarLink })
 		.setDescription(
 			'Chào mừng đến với Bot Con Bò Cười!\nXem danh sách lệnh dưới đây nhé!'
 		)
@@ -19,10 +18,10 @@ export const helpEmbed = () =>
 			{ name: 'b!help', value: 'Gọi ra bảng giúp đỡ này' },
 			{ name: 'b!vatsua', value: 'Bắt đầu vắt sữa bò' },
 			{ name: 'b!xemkho', value: 'Xem kho bạn có gì nào?' },
-			{ name: 'b!thongke', value: 'Xem bảng thống kê'},
-			{ name: 'b!anco', value: 'Cho bò ăn để có sữa nhé'},
-			{ name: 'b!xemmeo', value: 'Random ra ảnh con mòe'},
-			{ name: 'Github', value: 'https://github.com/Avocado0595/conbocuoi'},
+			{ name: 'b!thongke', value: 'Xem bảng thống kê' },
+			{ name: 'b!anco', value: 'Cho bò ăn để có sữa nhé' },
+			{ name: 'b!xemmeo', value: 'Random ra ảnh con mòe' },
+			{ name: 'Github', value: 'https://github.com/Avocado0595/conbocuoi' },
 		)
 		.setURL('https://github.com/Avocado0595/conbocuoi')
 		.setTimestamp()
@@ -34,14 +33,14 @@ export const statsEmbed = (user, userRank, top, page, totalPage) =>
 	new EmbedBuilder()
 		.setColor('#0099ff')
 		.setTitle('Bảng thống kê (toàn trái đất)')
-		.setURL(inviteLink)
-		.setAuthor({ name: 'Bot Con Bò Cười', iconURL: avatarLink, url: inviteLink })
+
+		.setAuthor({ name: 'Bot Con Bò Cười', iconURL: avatarLink })
 		.setDescription(top)
 		.setThumbnail(avatarLink)
 		.addFields(
-			{ name: 'Thứ hạng của bạn:', value: `${userRank} - ${user ? user.totalMilk : 0} lít sữa` ,inline: true},
+			{ name: `**Thứ hạng của bạn:** ${userRank} - ${user ? user.totalMilk : 0} lít sữa`, value: '\u200b ' },
 			{ name: 'Hãy tiếp tục vắt sữa nhé', value: `\nTrang: ${page}/${totalPage} - b!thongke ${'số trang'}` },
-		
+
 
 		)
 		.setTimestamp()
