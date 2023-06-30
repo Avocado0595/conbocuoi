@@ -68,6 +68,7 @@ client.on('interactionCreate', async (interaction) => {
 
 client.login(process.env.TOKEN);
 
+import express from "express";
 const app = express()
 const port = process.env.PORT || 3000;
 
