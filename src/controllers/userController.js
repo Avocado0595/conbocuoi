@@ -2,6 +2,7 @@ import { UserModel } from '../models/userModel.js';
 import randomRange from '../helpers/randomRange.js';
 import roundDouble from '../helpers/roundDouble.js';
 import config from '../config/config.js';
+import removeTag from '../helpers/removeTag.js';
 export const getUser = async (userId) => {
 	const result = await UserModel.findOne({ userId });
 	return result;
@@ -19,23 +20,28 @@ export const updateUser = async (id, updateUser) => {
 export const getTopNUser = async (userId, page, client) => {
 	const userPerPage = 10;
 	const sortedUserList = await UserModel.find().sort({ totalMilk: -1 });
-	const totalPage = Math.round(sortedUserList.length / userPerPage);
+	const totalPage = Math.ceil(sortedUserList.length / userPerPage);
 	const n = page > totalPage ? totalPage : page;
 	const userRank = await getUserRank(userId, sortedUserList);
-	const statRank = sortedUserList.slice((n - 1)*userPerPage,n*userPerPage);
+	const startIndex = (n - 1) * userPerPage;
+	const endIndex = n * userPerPage;
+	const statRank = sortedUserList.slice(startIndex, endIndex);
 	let statBoard = '';
 	let fetchList = [];
 	for (let i = 0; i < statRank.length; i++) {
-		fetchList.push(
-			client.users.fetch(statRank[i].userId).catch(console.error)
-		);
+		try {
+			const user = await client.users.fetch(statRank[i].userId);
+			fetchList.push(user);
+		} catch (error) {
+			console.error(`${statRank[i].userId}: ${error}`);
+		}
 	}
-	const statList = await Promise.all(fetchList);
+	const statList = fetchList.filter((user) => !!user);
 	for (let i = 0; i < statList.length; i++) {
-		statBoard += `${(n - 1) * userPerPage + i + 1}. ${statList[i].tag} - ${
-			statRank[i].totalMilk
-		} lít sữa\n`;
+		statBoard += `${startIndex + i + 1}. ${removeTag(statList[i].tag)} - ${statRank[i].totalMilk
+			} lít sữa\n`;
 	}
+
 	return { statBoard, userRank, totalPage };
 };
 
@@ -64,11 +70,11 @@ export const getTotalMilkByDay = async (user, date) => {
 		milkTank.forEach((element) => {
 			if (
 				new Date(element.takingTime).getDay() ==
-					new Date(date).getDay() &&
+				new Date(date).getDay() &&
 				new Date(element.takingTime).getMonth() ==
-					new Date(date).getMonth() &&
+				new Date(date).getMonth() &&
 				new Date(element.takingTime).getFullYear() ==
-					new Date(date).getFullYear()
+				new Date(date).getFullYear()
 			)
 				total += element.milk;
 		});
@@ -91,9 +97,9 @@ export const decStrength = async (user) => {
 
 export const incStrength = async (user) => {
 	const randNew = roundDouble(
-			user.cow.strength +
-				randomRange(config.incStrengthMax, config.incStrengthMin)
-		),
+		user.cow.strength +
+		randomRange(config.incStrengthMax, config.incStrengthMin)
+	),
 		newStrength = randNew <= 100 ? randNew : 100,
 		updatedCow = {
 			...user.cow,

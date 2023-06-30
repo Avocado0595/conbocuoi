@@ -1,49 +1,49 @@
-import { MessageEmbed } from 'discord.js';
+import { EmbedBuilder } from 'discord.js';
 
 const avatarLink =
-	'https://cdn.dribbble.com/users/1275/screenshots/2154492/media/7582ab673004df06fbac8dbef7211ad0.png',
-	inviteLink =
-		'https://discord.com/api/oauth2/authorize?client_id=910123710638333983&permissions=274877974528&scope=bot';
+	'https://cdn.dribbble.com/users/1275/screenshots/2154492/media/7582ab673004df06fbac8dbef7211ad0.png'
+
 
 export const helpEmbed = () =>
-	new MessageEmbed()
-		.setColor('#0099ff')
+	new EmbedBuilder()
+		.setColor(0, 153, 255)
 		.setTitle('Bot Con Bò Cười')
-		.setURL(inviteLink)
-		.setAuthor({ name: 'Bot Con Bò Cười', iconURL: avatarLink, url: inviteLink })
+
+		.setAuthor({ name: 'Bot Con Bò Cười', iconURL: avatarLink })
 		.setDescription(
 			'Chào mừng đến với Bot Con Bò Cười!\nXem danh sách lệnh dưới đây nhé!'
 		)
 		.setThumbnail(avatarLink)
-		.addField('b!help', 'Gọi ra bảng giúp đỡ này')
-		.addField('b!vatsua', 'Bắt đầu vắt sữa bò')
-		.addField('b!xemkho', 'Xem kho bạn có gì nào?')
-		.addField('b!thongke', 'Xem bảng thống kê')
-		.addField('b!anco', 'Cho bò ăn để có sữa nhé')
-		.addField('b!xemmeo', 'Random ra ảnh con mòe')
-		.addField('Github', 'https://github.com/Avocado0595/conbocuoi')
+		.addFields(
+			{ name: 'b!help', value: 'Gọi ra bảng giúp đỡ này' },
+			{ name: 'b!vatsua', value: 'Bắt đầu vắt sữa bò' },
+			{ name: 'b!xemkho', value: 'Xem kho bạn có gì nào?' },
+			{ name: 'b!thongke', value: 'Xem bảng thống kê' },
+			{ name: 'b!anco', value: 'Cho bò ăn để có sữa nhé' },
+			{ name: 'b!xemmeo', value: 'Random ra ảnh con mòe' },
+			{ name: 'Github', value: 'https://github.com/Avocado0595/conbocuoi' },
+		)
 		.setURL('https://github.com/Avocado0595/conbocuoi')
 		.setTimestamp()
 		.setFooter(
-			'Bot được tạo ra bởi ThanhXuan',
-			'https://cdn.discordapp.com/avatars/526277128992325632/523f5d88ae0c0324c27c28d1fdef27d2.png?size=1024'
+			{ text: 'Bot được tạo ra bởi ThanhXuan', iconURL: 'https://cdn.discordapp.com/avatars/526277128992325632/523f5d88ae0c0324c27c28d1fdef27d2.png?size=1024' }
 		);
 
 export const statsEmbed = (user, userRank, top, page, totalPage) =>
-	new MessageEmbed()
+	new EmbedBuilder()
 		.setColor('#0099ff')
 		.setTitle('Bảng thống kê (toàn trái đất)')
-		.setURL(inviteLink)
-		.setAuthor({ name: 'Bot Con Bò Cười', iconURL: avatarLink, url: inviteLink })
+
+		.setAuthor({ name: 'Bot Con Bò Cười', iconURL: avatarLink })
 		.setDescription(top)
 		.setThumbnail(avatarLink)
-		.addField(
-			`Thứ hạng của bạn: ${userRank} - ${user ? user.totalMilk : 0
-			} lít sữa`,
-			`Hãy tiếp tục vắt sữa nhé :"> \nTrang: ${page}/${totalPage} - b!thongke ${'số trang'}`
+		.addFields(
+			{ name: `**Thứ hạng của bạn:** ${userRank} - ${user ? user.totalMilk : 0} lít sữa`, value: '\u200b ' },
+			{ name: 'Hãy tiếp tục vắt sữa nhé', value: `\nTrang: ${page}/${totalPage} - b!thongke ${'số trang'}` },
+
+
 		)
 		.setTimestamp()
 		.setFooter(
-			'Bot được tạo ra bởi ThanhXuan',
-			'https://cdn.discordapp.com/avatars/526277128992325632/1b072787d8ef0a9252b15f0156e2ca86.png?size=1024'
+			{ text: 'Bot được tạo ra bởi ThanhXuan', iconURL: 'https://cdn.discordapp.com/avatars/526277128992325632/523f5d88ae0c0324c27c28d1fdef27d2.png?size=1024' }
 		);
