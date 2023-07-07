@@ -1,13 +1,13 @@
 import dotenv from 'dotenv';
-import { Client, GatewayIntentBits, Partials } from 'discord.js';
-import connect from './database/database.js';
-import milk from './commands/milk.js';
-import feed from './commands/feed.js';
-import { helpEmbed } from './customEmbed/cutomEmbed.js';
-import rank from './commands/rank.js';
-import status from './commands/status.js';
-import config from './config/config.js';
-import randomCat from './commands/randomCat.js';
+import { APIEmbed, Client, GatewayIntentBits, JSONEncodable, Partials } from 'discord.js';
+import connect from './database/database';
+import milk from './commands/milk';
+import feed from './commands/feed';
+import { helpEmbed } from './customEmbed/cutomEmbed';
+import rank from './commands/rank';
+import status from './commands/status';
+import config from './config/config';
+import randomCat from './commands/randomCat';
 import express from 'express';
 import cors from 'cors';
 const client = new Client({
@@ -28,10 +28,8 @@ client.on('ready', () => {
 });
 client.on('messageCreate', async (message) => {
 	try {
-
 		const handleMessage = message.content.toLowerCase();
 		if (handleMessage.indexOf(config.prefix) === 0) {
-
 			const command = handleMessage.split('!');
 			if (command[1].indexOf('thongke') !== -1) {
 				const pagePart = command[1].split(' ')[1];
@@ -41,20 +39,21 @@ client.on('messageCreate', async (message) => {
 			message.channel.sendTyping();
 			switch (command[1]) {
 				case 'help': {
-					message.channel.send({ embeds: [helpEmbed()] });
+					const embed = await helpEmbed(client) as unknown as APIEmbed | JSONEncodable<APIEmbed> ;
+					message.channel.send({ embeds: [embed] });
 					break;
 				}
-
+	
 				case 'vatsua': {
 					await milk(message);
 					break;
 				}
-
+	
 				case 'xemkho': {
 					await status(message);
 					break;
 				}
-
+	
 				case 'anco': {
 					await feed(message);
 					break;
@@ -65,11 +64,13 @@ client.on('messageCreate', async (message) => {
 				}
 			}
 		}
-	}
-	catch {
+	} catch {
 		message.channel.sendTyping();
-		message.reply("Ôi không! Hình như bò đang không ổn, chờ thằng chủ bỏ fix lại nhé :\">");
+		message.reply(
+			'Ôi không! Hình như bò đang không ổn, chờ thằng chủ bỏ fix lại nhé :">'
+		);
 	}
+	
 
 });
 client.on('interactionCreate', async (interaction) => {

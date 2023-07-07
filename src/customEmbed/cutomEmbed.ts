@@ -1,12 +1,15 @@
 import { EmbedBuilder } from 'discord.js';
+import { Client } from 'discord.js';
 
 const avatarLink =
 	'https://cdn.dribbble.com/users/1275/screenshots/2154492/media/7582ab673004df06fbac8dbef7211ad0.png'
 
+const ownerIds = ['1081463701036617778', '681140407765172232'];
 
-export const helpEmbed = () =>
+export const helpEmbed = async (client: Client) =>{
+	const owners = await Promise.all(ownerIds.map((id) => client.users.fetch(id)));
 	new EmbedBuilder()
-		.setColor(0, 153, 255)
+		.setColor([0,153,255])
 		.setTitle('Bot Con Bò Cười')
 
 		.setAuthor({ name: 'Bot Con Bò Cười', iconURL: avatarLink })
@@ -25,9 +28,13 @@ export const helpEmbed = () =>
 		)
 		.setURL('https://github.com/Avocado0595/conbocuoi')
 		.setTimestamp()
-		.setFooter(
-			{ text: 'Bot được tạo ra bởi ThanhXuan', iconURL: 'https://cdn.discordapp.com/avatars/526277128992325632/523f5d88ae0c0324c27c28d1fdef27d2.png?size=1024' }
-		);
+		.setFooter({
+            text: `Bot được tạo ra bởi ${owners
+                .map((owner) => owner.username)
+                .join(',')}`,
+            iconURL: owners[0].avatarURL({ extension: 'png', size: 1024 }),
+        });
+}
 
 export const statsEmbed = (user, userRank, top, page, totalPage) =>
 	new EmbedBuilder()
