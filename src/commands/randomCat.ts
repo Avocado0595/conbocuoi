@@ -1,6 +1,7 @@
 
+import { Message } from 'discord.js';
 import fetch from 'node-fetch';
-const randomCat = async (message) => {
+const randomCat = async (message: Message) => {
 
     const a = await fetch('https://cataas.com/cat');
     const result = await a.arrayBuffer();
