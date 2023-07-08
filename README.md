@@ -19,7 +19,7 @@ MONGODB=
 - Mỗi giờ bò sẽ giảm: 0.59% sức mạnh
 - Mỗi lần ăn cỏ bò sẽ tăng: 4-6% sức mạnh
 - Thời gian cooldown khi cho ăn là: 30s
-- Mỗi lần vắt sữa sẽ được: 2-4 lít sữa
-- Mỗi ngày vắt được tối đa: 16 lít sữa
+- Mỗi lần vắt sữa sẽ được: 1-5 lít sữa
+- Mỗi ngày vắt được tối đa: 80 lít sữa
 - Bò có dưới 50% sức mạnh sẽ không vắt được sữa
 - 

@@ -21,6 +21,7 @@ export const updateUser = async (id: mongoose.Types.ObjectId, updateUser: any) =
 export const getTopNUser = async (userId: string, page: number, client: any) => {
     const userPerPage = 10;
     const sortedUserList = await UserModel.find().sort({ totalMilk: -1 });
+
     const totalPage = Math.ceil(sortedUserList.length / userPerPage);
     const n = page > totalPage ? totalPage : page;
     const userRank = await getUserRank(userId, sortedUserList);
@@ -62,6 +63,7 @@ export const getTotalMilk = async (user: User) => {
             total += element.milk;
         });
     }
+
     return roundDouble(total);
 };
 export const getTotalMilkByDay = async (user: User, date: Date) => {

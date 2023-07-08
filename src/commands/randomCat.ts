@@ -1,10 +1,12 @@
 
 import { Message } from 'discord.js';
-import fetch from 'node-fetch';
+import axios from 'axios';
 const randomCat = async (message: Message) => {
 
-    const a = await fetch('https://cataas.com/cat');
-    const result = await a.arrayBuffer();
+    const a = await axios.get('https://cataas.com/cat', {
+        responseType: 'arraybuffer'
+    });
+    const result = await a.data;
     const img = Buffer.from(result);
     message.reply({ content: "Xem ảnh mèo nè!", files: [img] })
 

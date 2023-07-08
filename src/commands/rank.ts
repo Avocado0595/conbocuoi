@@ -3,6 +3,7 @@ import { statsEmbed } from '../customEmbed/cutomEmbed';
 import { Message, Client } from 'discord.js';
 
 const rank = async (message: Message, client: Client, page: number) => {
+
     const user = await getUser(message.author.id);
     const { statBoard, userRank, totalPage } = await getTopNUser(
         message.author.id,
@@ -12,12 +13,12 @@ const rank = async (message: Message, client: Client, page: number) => {
 
     message.channel.send({
         embeds: [
-            statsEmbed(
+            await statsEmbed(
                 user,
                 userRank,
                 statBoard,
                 page <= totalPage ? page : totalPage,
-                totalPage
+                totalPage, client
             ),
         ],
     });

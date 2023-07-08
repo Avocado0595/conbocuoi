@@ -11,7 +11,7 @@ import {
 import { Message } from 'discord.js';
 import { User } from '../models/userModel';
 import mongoose from 'mongoose';
-import {MilkTankModel} from '../models/milkTankModel';
+import { MilkTankModel } from '../models/milkTankModel';
 
 const milk = async (message: Message) => {
 	const user = await getUser(message.author.id),
@@ -26,8 +26,7 @@ const milk = async (message: Message) => {
 			const timeLeftMin = Math.floor(timeLeft / 60),
 				timeLeftSec = timeLeft % 60;
 			message.reply(
-				`**${
-					message.author.tag.split('#')[0]
+				`**${message.author.tag.split('#')[0]
 				}** vắt từ từ thôi nè ! Chờ ${timeLeftMin} phút ${timeLeftSec} giây nữa vắt tiếp nhé :"> !`
 			);
 		} else if (newStrength < 50)
@@ -38,8 +37,7 @@ const milk = async (message: Message) => {
 			const totalMilk = await getTotalMilkByDay(user, new Date());
 			if (totalMilk <= config.maxMilkPerDay) {
 				message.reply(
-					`**${
-						message.author.tag.split('#')[0]
+					`**${message.author.tag.split('#')[0]
 					}** vừa vắt được ${milk} lít sữa bò!`
 				);
 				const editUser = {
@@ -55,13 +53,13 @@ const milk = async (message: Message) => {
 				await updateUser(user._id, editUser);
 			} else {
 				message.reply(
-					`**${
-						message.author.tag.split('#')[0]
+					`**${message.author.tag.split('#')[0]
 					}** bạn vừa vắt hết sữa hôm nay rồi @.@! Hôm sau quay lại nhé :"> !`
 				);
 			}
 		}
 	} else {
+		//const milkTanks = new MilkTankModel({ milk, takingTime: new Date() });
 		const newUser: User = {
 			_id: new mongoose.Types.ObjectId(),
 			userTagName: message.author.tag,
@@ -73,13 +71,13 @@ const milk = async (message: Message) => {
 			},
 			userId: message.author.id,
 			lastTimeTakeMilk: new Date(),
-			milkTank: [new MilkTankModel({ milk, takingTime: new Date() })],
+			milkTank: [{ milk, takingTime: new Date() }],
 			totalMilk: milk,
 		};
+
 		await addUser(newUser);
 		message.reply(
-			`Lần đầu tiên, **${
-				message.author.tag.split('#')[0]
+			`Lần đầu tiên, **${message.author.tag.split('#')[0]
 			}** vừa vắt được ${milk} lít sữa bò!`
 		);
 	}

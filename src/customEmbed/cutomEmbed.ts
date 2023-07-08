@@ -1,15 +1,13 @@
 import { EmbedBuilder } from 'discord.js';
 import { Client } from 'discord.js';
+import config from '../config/config';
 
-const avatarLink =
-	'https://cdn.dribbble.com/users/1275/screenshots/2154492/media/7582ab673004df06fbac8dbef7211ad0.png'
-
-const ownerIds = ['1081463701036617778', '681140407765172232'];
-
-export const helpEmbed = async (client: Client) =>{
+const avatarLink = config.avatarLink;
+const ownerIds = config.ownerIds;
+export const helpEmbed = async (client: Client) => {
 	const owners = await Promise.all(ownerIds.map((id) => client.users.fetch(id)));
-	new EmbedBuilder()
-		.setColor([0,153,255])
+	return new EmbedBuilder()
+		.setColor([0, 153, 255])
 		.setTitle('Bot Con Bò Cười')
 
 		.setAuthor({ name: 'Bot Con Bò Cười', iconURL: avatarLink })
@@ -18,26 +16,25 @@ export const helpEmbed = async (client: Client) =>{
 		)
 		.setThumbnail(avatarLink)
 		.addFields(
-			{ name: 'b!help', value: 'Gọi ra bảng giúp đỡ này' },
-			{ name: 'b!vatsua', value: 'Bắt đầu vắt sữa bò' },
-			{ name: 'b!xemkho', value: 'Xem kho bạn có gì nào?' },
-			{ name: 'b!thongke', value: 'Xem bảng thống kê' },
-			{ name: 'b!anco', value: 'Cho bò ăn để có sữa nhé' },
-			{ name: 'b!xemmeo', value: 'Random ra ảnh con mòe' },
-			{ name: 'Github', value: 'https://github.com/Avocado0595/conbocuoi' },
+			{ name: 'b!thongtin hoặc b!info', value: 'Xem thông tin' },
+			{ name: 'b!vatsua hoặc b!milk', value: 'Bắt đầu vắt sữa bò' },
+			{ name: 'b!xemkho hoặc b!inven', value: 'Xem kho bạn có gì nào?' },
+			{ name: 'b!thongke hoặc b!stat', value: 'Xem bảng thống kê' },
+			{ name: 'b!anco hoặc b!eat', value: 'Cho bò ăn để có sữa nhé' },
+			{ name: 'b!xemmeo hoặc b!cat', value: 'Random ra ảnh con mòe' },
 		)
-		.setURL('https://github.com/Avocado0595/conbocuoi')
 		.setTimestamp()
 		.setFooter({
-            text: `Bot được tạo ra bởi ${owners
-                .map((owner) => owner.username)
-                .join(',')}`,
-            iconURL: owners[0].avatarURL({ extension: 'png', size: 1024 }),
-        });
+			text: `Bot được tạo ra bởi ${owners
+				.map((owner) => owner.username)
+				.join(',')}`,
+			iconURL: owners[0].avatarURL({ extension: 'png', size: 1024 }),
+		});
 }
 
-export const statsEmbed = (user, userRank, top, page, totalPage) =>
-	new EmbedBuilder()
+export const statsEmbed = async (user, userRank, top, page, totalPage, client: Client) => {
+	const owners = await Promise.all(config.ownerIds.map((id) => client.users.fetch(id)));
+	return new EmbedBuilder()
 		.setColor('#0099ff')
 		.setTitle('Bảng thống kê (toàn trái đất)')
 
@@ -51,6 +48,12 @@ export const statsEmbed = (user, userRank, top, page, totalPage) =>
 
 		)
 		.setTimestamp()
-		.setFooter(
-			{ text: 'Bot được tạo ra bởi ThanhXuan', iconURL: 'https://cdn.discordapp.com/avatars/526277128992325632/523f5d88ae0c0324c27c28d1fdef27d2.png?size=1024' }
+		.setFooter({
+			text: `Bot được tạo ra bởi ${owners
+				.map((owner) => owner.username)
+				.join(',')}`,
+			iconURL: owners[0].avatarURL({ extension: 'png', size: 1024 }),
+		}
 		);
+}
+
