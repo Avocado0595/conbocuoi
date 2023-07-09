@@ -24,7 +24,9 @@ const UserSchema = new Schema<User>(
         cow: {
             strength: Number,
             dateOfBirth: Date,
-            lastFeedingTime: Date
+            lastFeedingTime: Date,
+            timesFed: {type: Number, default: 0 },
+            level: {type: Number, default: 1}, 
         },
         lastTimeTakeMilk: Date,
         totalMilk: Number,

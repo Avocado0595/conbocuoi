@@ -13,6 +13,10 @@ const feed = async (message: Message) => {
             message.reply(
                 `Bạn vừa buff cho bò lên ${randNew}% sức mạnh :">\nHãy thường xuyên cho bò ăn nhé!`
             );
+            
+            user.cow.timesFed += 1;
+            user.cow.level = getLevelFromTimesFed(user.cow.timesFed);
+            await user.save();
         } else {
             if (user.cow.strength < 100)
                 message.reply(
@@ -23,6 +27,54 @@ const feed = async (message: Message) => {
     } else {
         message.reply('Bạn vừa vào trang trại, có thể b!vatsua ngay nhé !');
     }
-};
+    const feed = async (message: Message) => {
+        const user = await getUser(message.author.id);
+        if (user) {
+            const diffTime = new Date(user.cow.lastFeedingTime as any).getTime() - new Date().getTime(),
+                diffSecond = Math.abs(Math.ceil(diffTime / 1000)),
+                timeLeft = config.coolDownFeeding - diffSecond;
+            if (timeLeft <= 0) {
+                const randNew = await incStrength(user);
+                message.reply(
+                    `Bạn vừa buff cho bò lên ${randNew}% sức mạnh :">\nHãy thường xuyên cho bò ăn nhé!`
+                );
+                
+               // level
+                user.cow.timesFed += 1;
+                const newLevel = getLevelFromTimesFed(user.cow.timesFed);
+                if (newLevel > user.cow.level) {
+                    message.reply(`Chúc mừng, bò của bạn đã lên cấp *${newLevel}*!`);
+                }
+                user.cow.level = newLevel;
+                await user.save();
+            } else {
+                if (user.cow.strength < 100)
+                    message.reply(
+                        `Bò đang nhai mà @.@ !\nChờ ${timeLeft} giây nữa rồi cho ăn tiếp nhé!`
+                    );
+                else message.reply('Bò no rồi, không cần ăn nữa đâu!');
+            }
+        } else {
+            message.reply('Bạn vừa vào trang trại, có thể b!vatsua ngay nhé !');
+        }
+    };
+    
+
+function getLevelFromTimesFed(timesFed: number): number {
+    let a = 1;
+    let b = 1;
+    let level = 1;
+    
+    while (b <= timesFed) {
+        const temp = a + b;
+        a = b;
+        b = temp;
+        level += 1;
+    }
+    
+    return level;
+}
+}
+
 
 export default feed;

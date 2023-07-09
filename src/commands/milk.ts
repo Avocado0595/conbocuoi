@@ -11,11 +11,19 @@ import {
 import { Message } from 'discord.js';
 import { User } from '../models/userModel';
 import mongoose from 'mongoose';
-import { MilkTankModel } from '../models/milkTankModel';
 
 const milk = async (message: Message) => {
-	const user = await getUser(message.author.id),
-		milk = roundDouble(randomRange(config.maxMilk, config.minMilk));
+	const user = await getUser(message.author.id);
+	
+	
+	let maxMilk = config.maxMilk;
+	let minMilk = config.minMilk;
+	if (user) {
+		maxMilk = user.cow.level + 1;
+		minMilk = user.cow.level;
+	}
+	const milkAmount = roundDouble(randomRange(maxMilk, minMilk));
+	
 	if (user) {
 		const newStrength = await decStrength(user),
 			diffTime = new Date(user.lastTimeTakeMilk).getTime() - new Date().getTime(),
@@ -35,19 +43,23 @@ const milk = async (message: Message) => {
 			);
 		else {
 			const totalMilk = await getTotalMilkByDay(user, new Date());
-			if (totalMilk <= config.maxMilkPerDay) {
+			
+			// 
+			const maxMilkPerDay = user.cow.level * 5;
+			
+			if (totalMilk <= maxMilkPerDay) {
 				message.reply(
 					`**${message.author.tag.split('#')[0]
-					}** vừa vắt được ${milk} lít sữa bò!`
+					}** vừa vắt được ${milkAmount} lít sữa bò!`
 				);
 				const editUser = {
-					totalMilk: roundDouble(user.totalMilk + milk),
+					totalMilk: roundDouble(user.totalMilk + milkAmount),
 					numberOfCow: user.numberOfCow,
 					userId: message.author.id,
 					lastTimeTakeMilk: new Date(),
 					milkTank: [
 						...user.milkTank,
-						{ milk, takingTime: new Date() },
+						{ milk: milkAmount, takingTime: new Date() },
 					],
 				};
 				await updateUser(user._id, editUser);
@@ -59,7 +71,6 @@ const milk = async (message: Message) => {
 			}
 		}
 	} else {
-		//const milkTanks = new MilkTankModel({ milk, takingTime: new Date() });
 		const newUser: User = {
 			_id: new mongoose.Types.ObjectId(),
 			userTagName: message.author.tag,
@@ -68,19 +79,24 @@ const milk = async (message: Message) => {
 				strength: 100,
 				dateOfBirth: new Date(),
 				lastFeedingTime: new Date(),
+				timesFed: 0,
+				level: 1,
 			},
 			userId: message.author.id,
 			lastTimeTakeMilk: new Date(),
-			milkTank: [{ milk, takingTime: new Date() }],
-			totalMilk: milk,
+			milkTank: [{ milk: milkAmount, takingTime: new Date() }],
+			totalMilk: milkAmount,
 		};
 
 		await addUser(newUser);
 		message.reply(
 			`Lần đầu tiên, **${message.author.tag.split('#')[0]
-			}** vừa vắt được ${milk} lít sữa bò!`
+			}** vừa vắt được ${milkAmount} lít sữa bò!`
 		);
 	}
 };
+
+
+
 
 export default milk;
