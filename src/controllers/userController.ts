@@ -131,7 +131,7 @@ export const changeMoney = async (user: User, milk: Number) => {
     const total = user.money + addedMoney;
     await UserModel.findByIdAndUpdate(
         user._id,
-        { $set: { 'money': total } },
+        { $set: { 'money': total, 'totalMilk': user.totalMilk - (milk as number) } },
         { new: true }
     );
     return { addedMoney: roundDouble(addedMoney), total: roundDouble(total) };
