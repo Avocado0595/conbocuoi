@@ -11,6 +11,9 @@ import randomCat from './commands/randomCat';
 import express from 'express';
 import cors from 'cors';
 import { informationEmbed } from './commands/information';
+import setRatio from './commands/setRatio';
+import getRatio from './commands/getRatio';
+import changeMoney from './commands/changeMoney';
 const client = new Client({
 	intents: [
 		GatewayIntentBits.Guilds,
@@ -36,6 +39,17 @@ client.on('messageCreate', async (message) => {
 				const pagePart = command[1].split(' ')[1];
 				const page = Math.abs(Number.parseInt(pagePart)) || 1;
 				await rank(message, client, page);
+				return;
+			}
+			if (command[1].indexOf('setratio') !== -1 && message.author.id === config.ownerIds[0]) {
+				const ratio = parseFloat(command[1].split(' ')[1]);
+				await setRatio(message, ratio);
+				return;
+			}
+			if (command[1].indexOf('sell') !== -1) {
+				const milk = parseFloat(command[1].split(' ')[1]);
+				await changeMoney(message, milk);
+				return;
 			}
 			message.channel.sendTyping();
 			switch (command[1]) {
@@ -71,6 +85,11 @@ client.on('messageCreate', async (message) => {
 				case 'xemmeo':
 				case 'cat': {
 					await randomCat(message);
+					break;
+				};
+				case 'ratio':
+				case 'tygia': {
+					await getRatio(message);
 					break;
 				}
 			}

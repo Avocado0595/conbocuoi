@@ -4,8 +4,9 @@ import roundDouble from '../helpers/roundDouble';
 import config from '../config/config';
 import removeTag from '../helpers/removeTag';
 import mongoose from 'mongoose';
+import { getCurrentRatio } from './moneyController';
 
-export const getUser = async (userId: string) => {
+export const getUser = async (userId: string): Promise<User> => {
     const result = await UserModel.findOne({ userId });
     return result;
 };
@@ -72,8 +73,8 @@ export const getTotalMilkByDay = async (user: User, date: Date) => {
         const { milkTank } = user;
         milkTank.forEach((element: any) => {
             if (
-                new Date(element.takingTime).getDay() ==
-                new Date(date).getDay() &&
+                new Date(element.takingTime).getDate() ==
+                new Date(date).getDate() &&
                 new Date(element.takingTime).getMonth() ==
                 new Date(date).getMonth() &&
                 new Date(element.takingTime).getFullYear() ==
@@ -122,3 +123,16 @@ export const incStrength = async (user: User) => {
     );
     return roundDouble(newStrength);
 };
+
+
+export const changeMoney = async (user: User, milk: Number) => {
+    const ratio = await getCurrentRatio();
+    const addedMoney = (ratio as number) * (milk as number);
+    const total = user.money + addedMoney;
+    await UserModel.findByIdAndUpdate(
+        user._id,
+        { $set: { 'money': total } },
+        { new: true }
+    );
+    return { addedMoney: roundDouble(addedMoney), total: roundDouble(total) };
+}

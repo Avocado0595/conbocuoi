@@ -21,6 +21,8 @@ export const helpEmbed = async (client: Client) => {
 			{ name: 'b!xemkho hoặc b!inven', value: 'Xem kho bạn có gì nào?' },
 			{ name: 'b!thongke hoặc b!stat', value: 'Xem bảng thống kê' },
 			{ name: 'b!anco hoặc b!eat', value: 'Cho bò ăn để có sữa nhé' },
+			{ name: 'b!sell x', value: 'Bán đi x lít sữa' },
+			{ name: 'b!ratio', value: 'Xem tỷ giá sữa' },
 			{ name: 'b!xemmeo hoặc b!cat', value: 'Random ra ảnh con mòe' },
 		)
 		.setTimestamp()

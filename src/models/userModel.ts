@@ -13,6 +13,7 @@ export interface User {
     cow: Partial<Cow>;
     lastTimeTakeMilk: Date;
     totalMilk: number;
+    money: number
 }
 
 const UserSchema = new Schema<User>(
@@ -28,6 +29,7 @@ const UserSchema = new Schema<User>(
         },
         lastTimeTakeMilk: Date,
         totalMilk: Number,
+        money: { type: Number, default: 0 }
     },
     { timestamps: true }
 );

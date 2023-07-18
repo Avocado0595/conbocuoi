@@ -27,18 +27,18 @@ const milk = async (message: Message) => {
 				timeLeftSec = timeLeft % 60;
 			message.reply(
 				`**${message.author.tag.split('#')[0]
-				}** vắt từ từ thôi nè ! Chờ ${timeLeftMin} phút ${timeLeftSec} giây nữa vắt tiếp nhé :"> !`
+				}** vắt từ từ thôi nè ! Chờ ${timeLeftMin} phút ${timeLeftSec} giây nữa vắt tiếp nhé :face_with_spiral_eyes: !`
 			);
 		} else if (newStrength < 50)
 			message.reply(
-				'Bò đang đói, hãy cho bò ăn để có sữa nhé!\nDùng ```b!anco``` để cho bò ăn nè'
+				'Bò đang đói :tired_face:, hãy cho bò ăn để có sữa nhé!\nDùng **b!anco** :ear_of_rice:  để cho bò ăn nè'
 			);
 		else {
 			const totalMilk = await getTotalMilkByDay(user, new Date());
 			if (totalMilk <= config.maxMilkPerDay) {
 				message.reply(
 					`**${message.author.tag.split('#')[0]
-					}** vừa vắt được ${milk} lít sữa bò!`
+					}** vừa vắt được ${milk} lít sữa bò! :bucket:`
 				);
 				const editUser = {
 					totalMilk: roundDouble(user.totalMilk + milk),
@@ -54,7 +54,7 @@ const milk = async (message: Message) => {
 			} else {
 				message.reply(
 					`**${message.author.tag.split('#')[0]
-					}** bạn vừa vắt hết sữa hôm nay rồi @.@! Hôm sau quay lại nhé :"> !`
+					}** bạn vừa vắt hết sữa hôm nay rồi :open_mouth: ! Hôm sau quay lại nhé :wink: !`
 				);
 			}
 		}
@@ -72,6 +72,7 @@ const milk = async (message: Message) => {
 			userId: message.author.id,
 			lastTimeTakeMilk: new Date(),
 			milkTank: [{ milk, takingTime: new Date() }],
+			money: 0,
 			totalMilk: milk,
 		};
 

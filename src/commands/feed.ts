@@ -11,12 +11,12 @@ const feed = async (message: Message) => {
         if (timeLeft <= 0) {
             const randNew = await incStrength(user);
             message.reply(
-                `Bạn vừa buff cho bò lên ${randNew}% sức mạnh :">\nHãy thường xuyên cho bò ăn nhé!`
+                `Bạn vừa buff cho bò lên ${randNew}% sức mạnh :yum:\nHãy thường xuyên cho bò ăn nhé!`
             );
         } else {
             if (user.cow.strength < 100)
                 message.reply(
-                    `Bò đang nhai mà @.@ !\nChờ ${timeLeft} giây nữa rồi cho ăn tiếp nhé!`
+                    `Bò đang nhai mà :triumph: !\nChờ ${timeLeft} giây nữa rồi cho ăn tiếp nhé!`
                 );
             else message.reply('Bò no rồi, không cần ăn nữa đâu!');
         }
