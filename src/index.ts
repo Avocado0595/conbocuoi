@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import { APIEmbed, Client, GatewayIntentBits, JSONEncodable, Partials } from 'discord.js';
+import { APIEmbed, Client, Events, GatewayIntentBits, JSONEncodable, Partials } from 'discord.js';
 import connect from './database/database';
 import milk from './commands/milk';
 import feed from './commands/feed';
@@ -14,6 +14,12 @@ import { informationEmbed } from './commands/information';
 import setRatio from './commands/setRatio';
 import getRatio from './commands/getRatio';
 import changeMoney from './commands/changeMoney';
+import { commands } from './slashcommand/slashcommands';
+import * as pingSlashCommand from './slashcommand/ping'
+import * as goodnightSlashCommand from './slashcommand/goodnight'
+
+
+
 const client = new Client({
 	intents: [
 		GatewayIntentBits.Guilds,
@@ -27,10 +33,14 @@ const client = new Client({
 dotenv.config();
 connect();
 
-client.on('ready', () => {
-	console.log(`Logged in as ${client.user.tag}!`);
+
+
+
+client.once(Events.ClientReady, c => {
+	console.log(`Logged in as ${c.user.tag}!`);
+	client.application?.commands.set(commands);
 });
-client.on('messageCreate', async (message) => {
+client.on(Events.MessageCreate, async (message) => {
 	try {
 		const handleMessage = message.content.toLowerCase();
 		if (handleMessage.indexOf(config.prefix) === 0) {
@@ -104,16 +114,18 @@ client.on('messageCreate', async (message) => {
 
 
 });
-client.on('interactionCreate', async (interaction) => {
-	if (!interaction.isCommand()) return;
 
-	if (interaction.commandName === 'ping') {
-		await interaction.reply('Pong!');
+
+client.on(Events.InteractionCreate, interaction => {
+	if(!interaction.isChatInputCommand()) return;
+	if(interaction.commandName === "ping"){
+		pingSlashCommand.execute(interaction)
 	}
 	if (interaction.commandName === 'g9') {
-		await interaction.reply('Ngủ ngon nè! <3');
+		goodnightSlashCommand.execute(interaction)
 	}
-});
+})
+
 
 client.login(process.env.TOKEN);
 
