@@ -4,7 +4,7 @@ import connect from './database/database';
 import milk from './commands/milk';
 import feed from './commands/feed';
 import { helpEmbed } from './customEmbed/cutomEmbed';
-import rank from './commands/rank';
+import stat from './commands/stat';
 import status from './commands/status';
 import config from './config/config';
 import randomCat from './commands/randomCat';
@@ -13,10 +13,14 @@ import cors from 'cors';
 import { informationEmbed } from './commands/information';
 import setRatio from './commands/setRatio';
 import getRatio from './commands/getRatio';
-import changeMoney from './commands/changeMoney';
+
 import { commands } from './slashcommand/slashcommands';
 import * as pingSlashCommand from './slashcommand/ping'
 import * as goodnightSlashCommand from './slashcommand/goodnight'
+import randomImage from './commands/randomImage';
+import sell from './commands/changeMoney';
+import { isInt, isIntOrFloat } from './helpers/isValidNumber';
+
 
 
 
@@ -45,24 +49,41 @@ client.on(Events.MessageCreate, async (message) => {
 		const handleMessage = message.content.toLowerCase();
 		if (handleMessage.indexOf(config.prefix) === 0) {
 			const command = handleMessage.split('!');
-			if ((command[1].indexOf('thongke') !== -1) || command[1].indexOf('stat') !== -1) {
-				const pagePart = command[1].split(' ')[1];
-				const page = Math.abs(Number.parseInt(pagePart)) || 1;
-				await rank(message, client, page);
-				return;
-			}
-			if (command[1].indexOf('setratio') !== -1 && message.author.id === config.ownerIds[0]) {
-				const ratio = parseFloat(command[1].split(' ')[1]);
-				await setRatio(message, ratio);
-				return;
-			}
+
+
 			if (command[1].indexOf('sell') !== -1) {
 				const milk = parseFloat(command[1].split(' ')[1]);
-				await changeMoney(message, milk);
+				await sell(message, milk);
 				return;
 			}
 			message.channel.sendTyping();
-			switch (command[1]) {
+			const commandParts = command[1].split(" ");
+			switch (commandParts[0]) {
+				case 'thongke':
+				case 'stat': {
+					const pagePart = commandParts[1];
+					const page = isInt(pagePart) ? parseInt(pagePart) : 1;
+					await stat(message, client, page);
+					break;
+				}
+				case 'setratio': {
+					if (!isIntOrFloat(commandParts[1])) {
+						message.reply(":woman_gesturing_no: Đừng có mà nhập linh tinh cho bò nè! Nhập số >0 thôi.");
+						break;
+					}
+					const ratio = parseFloat(commandParts[1]);
+					await setRatio(message, ratio);
+					break;
+				}
+				case 'sell': {
+					if (!isIntOrFloat(commandParts[1])) {
+						message.reply(":woman_gesturing_no: Đừng có mà nhập linh tinh cho bò nè! Nhập số >0 thôi.");
+						break;
+					}
+					const milk = parseFloat(commandParts[1]);
+					await sell(message, milk);
+					break;
+				}
 				case 'thongtin':
 				case 'info': {
 					const embed = await informationEmbed(client) as unknown as APIEmbed | JSONEncodable<APIEmbed>;
@@ -97,6 +118,10 @@ client.on(Events.MessageCreate, async (message) => {
 					await randomCat(message);
 					break;
 				};
+				case 'cow': {
+					await randomImage(message, 'bocute');
+					break;
+				};
 				case 'ratio':
 				case 'tygia': {
 					await getRatio(message);
@@ -117,8 +142,8 @@ client.on(Events.MessageCreate, async (message) => {
 
 
 client.on(Events.InteractionCreate, interaction => {
-	if(!interaction.isChatInputCommand()) return;
-	if(interaction.commandName === "ping"){
+	if (!interaction.isChatInputCommand()) return;
+	if (interaction.commandName === "ping") {
 		pingSlashCommand.execute(interaction)
 	}
 	if (interaction.commandName === 'g9') {

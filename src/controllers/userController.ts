@@ -125,7 +125,7 @@ export const incStrength = async (user: User) => {
 };
 
 
-export const changeMoney = async (user: User, milk: Number) => {
+export const sell = async (user: User, milk: Number) => {
     const ratio = await getCurrentRatio();
     const addedMoney = (ratio as number) * (milk as number);
     const total = user.money + addedMoney;
@@ -135,4 +135,14 @@ export const changeMoney = async (user: User, milk: Number) => {
         { new: true }
     );
     return { addedMoney: roundDouble(addedMoney), total: roundDouble(total) };
+}
+
+
+export const takeMoney = async (user: User) => {
+    await UserModel.findByIdAndUpdate(
+        user._id,
+        { $set: { 'money': user.money - config.imagePrice } },
+        { new: true }
+    );
+
 }

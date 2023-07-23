@@ -1,12 +1,11 @@
-import { incStrength, getUser } from '../controllers/userController';
-import config from '../config/config';
-import { Message } from 'discord.js';
-import { changeMoney as cm } from '../controllers/userController';
 
-const changeMoney = async (message: Message, milk: Number) => {
+import { Message } from 'discord.js';
+import { getUser, sell as s } from '../controllers/userController';
+
+const sell = async (message: Message, milk: Number) => {
     const user = await getUser(message.author.id);
     if (user && user.totalMilk >= (milk as number)) {
-        const newMoney = await cm(user, milk);
+        const newMoney = await s(user, milk);
         message.reply(`Bạn vừa bán **${milk} lít sữa** lấy **${newMoney.addedMoney} cow coin (cc)**.\nHiện bạn đang có **${newMoney.total} cc**. :money_mouth:`);
     } else {
 
@@ -14,4 +13,4 @@ const changeMoney = async (message: Message, milk: Number) => {
     }
 };
 
-export default changeMoney;
+export default sell;

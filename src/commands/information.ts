@@ -1,10 +1,9 @@
 import { Client, EmbedBuilder } from "discord.js";
 import config from "../config/config";
+import footerEmbed from "../customEmbed/footerEmbed";
 
 const avatarLink = config.avatarLink;
-const ownerIds = config.ownerIds;
 export const informationEmbed = async (client: Client) => {
-    const owners = await Promise.all(ownerIds.map((id) => client.users.fetch(id)));
     return new EmbedBuilder()
         .setColor([0, 153, 255])
         .setTitle('Bot Con Bò Cười')
@@ -14,10 +13,5 @@ export const informationEmbed = async (client: Client) => {
         )
         .setThumbnail(config.avatarLink)
         .setTimestamp()
-        .setFooter({
-            text: `Bot được tạo ra bởi ${owners
-                .map((owner) => owner.username)
-                .join(',')}`,
-            iconURL: owners[0].avatarURL({ extension: 'png', size: 1024 }),
-        });
+        .setFooter(await footerEmbed(client));
 }

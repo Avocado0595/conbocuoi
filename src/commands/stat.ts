@@ -2,7 +2,7 @@ import { getTopNUser, getUser } from '../controllers/userController';
 import { statsEmbed } from '../customEmbed/cutomEmbed';
 import { Message, Client } from 'discord.js';
 
-const rank = async (message: Message, client: Client, page: number) => {
+const stat = async (message: Message, client: Client, page: number) => {
 
     const user = await getUser(message.author.id);
     const { statBoard, userRank, totalPage } = await getTopNUser(
@@ -24,4 +24,4 @@ const rank = async (message: Message, client: Client, page: number) => {
     });
 };
 
-export default rank;
+export default stat;
