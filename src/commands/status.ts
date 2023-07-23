@@ -1,5 +1,4 @@
 import {
-    getTotalMilk,
     getTotalMilkByDay,
     getUser,
 } from '../controllers/userController';
@@ -9,11 +8,10 @@ import roundDouble from '../helpers/roundDouble';
 const status = async (message: Message) => {
     const user = await getUser(message.author.id);
     if (user) {
-        const totalMilk = await getTotalMilk(user),
-            totalMilkToday = await getTotalMilkByDay(user, new Date());
+        const totalMilkToday = await getTotalMilkByDay(user, new Date());
         message.reply(
             `**${message.author.tag.split('#')[0]}** đang có ${user.numberOfCow
-            } con bò với ${user.cow.strength}% năng lượng.\nHôm nay vắt được **${totalMilkToday}** lít sữa.\nĐang có **${totalMilk} lít sữa** trong kho và **${roundDouble(user.money)}cc** trong ví.`
+            } con bò với ${user.cow.strength}% năng lượng.\nHôm nay vắt được **${totalMilkToday}** lít sữa.\nĐang có **${roundDouble(user.totalMilk)} lít sữa** trong kho và **${roundDouble(user.money)}cc** trong ví.`
         );
     } else {
         message.reply(

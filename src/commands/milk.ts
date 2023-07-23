@@ -30,11 +30,11 @@ const milk = async (message: Message) => {
 			);
 		} else if (newStrength < 50)
 			message.reply(
-				'Bò đang đói :tired_face:, hãy cho bò ăn để có sữa nhé!\nDùng **b!anco** :ear_of_rice:  để cho bò ăn nè'
+				'Bò đang đói :tired_face:, hãy cho bò ăn để có sữa nhé!\nDùng **b!anco** :ear_of_rice:  để cho bò ăn nè.'
 			);
 		else {
-			const totalMilk = await getTotalMilkByDay(user, new Date());
-			if (totalMilk <= config.maxMilkPerDay) {
+			const totalMilkPerDay = await getTotalMilkByDay(user, new Date());
+			if (totalMilkPerDay <= config.maxMilkPerDay) {
 				message.reply(
 					`**${message.author.tag.split('#')[0]
 					}** vừa vắt được ${milk} lít sữa bò! :bucket:`
@@ -58,7 +58,6 @@ const milk = async (message: Message) => {
 			}
 		}
 	} else {
-		//const milkTanks = new MilkTankModel({ milk, takingTime: new Date() });
 		const newUser: User = {
 			_id: new mongoose.Types.ObjectId(),
 			userTagName: message.author.tag,
