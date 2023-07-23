@@ -4,7 +4,7 @@ import { getUser, sell as s } from '../controllers/userController';
 
 const sell = async (message: Message, milk: Number) => {
     const user = await getUser(message.author.id);
-    console.log({ m: user.totalMilk, m2: milk })
+
     if (user && user.totalMilk >= (milk as number)) {
         const newMoney = await s(user, milk);
         message.reply(`Bạn vừa bán **${milk} lít sữa** lấy **${newMoney.addedMoney} cow coin (cc)**.\nHiện bạn đang có **${newMoney.total} cc**. :money_mouth:`);

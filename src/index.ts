@@ -42,13 +42,6 @@ client.on(Events.MessageCreate, async (message) => {
 		const handleMessage = message.content.toLowerCase();
 		if (handleMessage.indexOf(config.prefix) === 0) {
 			const command = handleMessage.split('!');
-
-
-			if (command[1].indexOf('sell') !== -1) {
-				const milk = parseFloat(command[1].split(' ')[1]);
-				await sell(message, milk);
-				return;
-			}
 			message.channel.sendTyping();
 			const commandParts = command[1].split(" ");
 			switch (commandParts[0]) {
@@ -69,6 +62,7 @@ client.on(Events.MessageCreate, async (message) => {
 					break;
 				}
 				case 'sell': {
+
 					if (!isIntOrFloat(commandParts[1])) {
 						message.reply(":woman_gesturing_no: Đừng có mà nhập linh tinh cho bò nè! Nhập số >0 thôi.");
 						break;
