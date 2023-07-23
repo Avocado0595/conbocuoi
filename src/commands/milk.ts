@@ -11,7 +11,6 @@ import {
 import { Message } from 'discord.js';
 import { User } from '../models/userModel';
 import mongoose from 'mongoose';
-import { MilkTankModel } from '../models/milkTankModel';
 
 const milk = async (message: Message) => {
 	const user = await getUser(message.author.id),

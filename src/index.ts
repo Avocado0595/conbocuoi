@@ -13,16 +13,12 @@ import cors from 'cors';
 import { informationEmbed } from './commands/information';
 import setRatio from './commands/setRatio';
 import getRatio from './commands/getRatio';
-
 import { commands } from './slashcommand/slashcommands';
 import * as pingSlashCommand from './slashcommand/ping'
 import * as goodnightSlashCommand from './slashcommand/goodnight'
 import randomImage from './commands/randomImage';
-import sell from './commands/changeMoney';
+import sell from './commands/sell';
 import { isInt, isIntOrFloat } from './helpers/isValidNumber';
-
-
-
 
 const client = new Client({
 	intents: [
@@ -36,9 +32,6 @@ const client = new Client({
 
 dotenv.config();
 connect();
-
-
-
 
 client.once(Events.ClientReady, c => {
 	console.log(`Logged in as ${c.user.tag}!`);

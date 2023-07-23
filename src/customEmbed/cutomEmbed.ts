@@ -31,15 +31,12 @@ export const statsEmbed = async (user, userRank, top, page, totalPage, client: C
 	return new EmbedBuilder()
 		.setColor('#0099ff')
 		.setTitle('Bảng thống kê (toàn trái đất)')
-
 		.setAuthor({ name: 'Bot Con Bò Cười', iconURL: avatarLink })
 		.setDescription(top)
 		.setThumbnail(avatarLink)
 		.addFields(
 			{ name: `**Thứ hạng của bạn:** ${userRank} - ${user ? user.totalMilk : 0} lít sữa`, value: '\u200b ' },
 			{ name: 'Hãy tiếp tục vắt sữa nhé', value: `\nTrang: ${page}/${totalPage} - b!thongke ${'số trang'}` },
-
-
 		)
 		.setTimestamp()
 		.setFooter(await footerEmbed(client));

@@ -137,7 +137,6 @@ export const sell = async (user: User, milk: Number) => {
     return { addedMoney: roundDouble(addedMoney), total: roundDouble(total) };
 }
 
-
 export const takeMoney = async (user: User) => {
     await UserModel.findByIdAndUpdate(
         user._id,

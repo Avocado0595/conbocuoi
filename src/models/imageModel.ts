@@ -1,5 +1,4 @@
-
-import mongoose, { Types } from 'mongoose';
+import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 export type ImageTypes = 'bocute' | 'cat' | 'dog';
@@ -14,7 +13,6 @@ const ImageSchema = new Schema<Image>(
     {
         link: String,
         type: String
-
     },
     { timestamps: true }
 );
