@@ -48,6 +48,36 @@ export const getTopNUser = async (userId: string, page: number, client: any) => 
     return { statBoard, userRank, totalPage };
 };
 
+
+export const getTopMoney = async (userId: string, page: number, client: any) => {
+    const userPerPage = 10;
+    const sortedUserList = await UserModel.find().sort({ money: -1 });
+
+    const totalPage = Math.ceil(sortedUserList.length / userPerPage);
+    const n = page > totalPage ? totalPage : page;
+    const userRank = await getUserRank(userId, sortedUserList);
+    const startIndex = (n - 1) * userPerPage;
+    const endIndex = n * userPerPage;
+    const statRank = sortedUserList.slice(startIndex, endIndex);
+    let statBoard = '';
+    let fetchList = [];
+    for (let i = 0; i < statRank.length; i++) {
+        try {
+            const user = await client.users.fetch(statRank[i].userId);
+            fetchList.push(user);
+        } catch (error) {
+            console.error(`${statRank[i].userId}: ${error}`);
+        }
+    }
+    const statList = fetchList.filter((user) => !!user);
+    for (let i = 0; i < statList.length; i++) {
+        statBoard += `${startIndex + i + 1}. ${removeTag(statList[i].tag)} - ${roundDouble(statRank[i].money)
+            }cc\n`;
+    }
+
+    return { statBoard, userRank, totalPage };
+};
+
 export const getUserRank = async (userId: string, sortedUserList: User[]) => {
     for (let i = 0; i < sortedUserList.length; i++) {
         if (userId === sortedUserList[i].userId) {

@@ -19,6 +19,7 @@ import * as goodnightSlashCommand from './slashcommand/goodnight'
 import randomImage from './commands/randomImage';
 import sell from './commands/sell';
 import { isInt, isIntOrFloat } from './helpers/isValidNumber';
+import moneyStat from './commands/moneyStat';
 
 const client = new Client({
 	intents: [
@@ -50,6 +51,12 @@ client.on(Events.MessageCreate, async (message) => {
 					const pagePart = commandParts[1];
 					const page = isInt(pagePart) ? parseInt(pagePart) : 1;
 					await stat(message, client, page);
+					break;
+				}
+				case 'top': {
+					const pagePart = commandParts[1];
+					const page = isInt(pagePart) ? parseInt(pagePart) : 1;
+					await moneyStat(message, client, page);
 					break;
 				}
 				case 'setratio': {

@@ -26,11 +26,11 @@ export const helpEmbed = async (client: Client) => {
 		.setFooter(await footerEmbed(client));
 }
 
-export const statsEmbed = async (user, userRank, top, page, totalPage, client: Client) => {
+export const statsEmbed = async (title, user, userRank, top, page, totalPage, client: Client) => {
 
 	return new EmbedBuilder()
 		.setColor('#0099ff')
-		.setTitle('Bảng thống kê (toàn trái đất)')
+		.setTitle(title)
 		.setAuthor({ name: 'Bot Con Bò Cười', iconURL: avatarLink })
 		.setDescription(top)
 		.setThumbnail(avatarLink)
