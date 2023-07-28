@@ -58,23 +58,7 @@ const milk = async (message: Message) => {
 			}
 		}
 	} else {
-		const newUser: User = {
-			_id: new mongoose.Types.ObjectId(),
-			userTagName: message.author.tag,
-			numberOfCow: 1,
-			cow: {
-				strength: 100,
-				dateOfBirth: new Date(),
-				lastFeedingTime: new Date(),
-			},
-			userId: message.author.id,
-			lastTimeTakeMilk: new Date(),
-			milkTank: [{ milk, takingTime: new Date() }],
-			money: 0,
-			totalMilk: milk,
-		};
-
-		await addUser(newUser);
+		await addUser(message.author.tag, message.author.id, milk);
 		message.reply(
 			`Lần đầu tiên, **${message.author.tag.split('#')[0]
 			}** vừa vắt được ${milk} lít sữa bò!`

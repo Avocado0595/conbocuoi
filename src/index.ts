@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import { APIEmbed, Client, Events, GatewayIntentBits, JSONEncodable, Partials } from 'discord.js';
+import { APIEmbed, Client, Events, GatewayIntentBits, JSONEncodable, Partials, TextChannel } from 'discord.js';
 import connect from './database/database';
 import milk from './commands/milk';
 import feed from './commands/feed';
@@ -16,10 +16,14 @@ import getRatio from './commands/getRatio';
 import { commands } from './slashcommand/slashcommands';
 import * as pingSlashCommand from './slashcommand/ping'
 import * as goodnightSlashCommand from './slashcommand/goodnight'
+import * as serverSlashCommand from './slashcommand/server/serever-slash'
 import randomImage from './commands/randomImage';
 import sell from './commands/sell';
 import { isInt, isIntOrFloat } from './helpers/isValidNumber';
 import moneyStat from './commands/moneyStat';
+import listServer from './commands/server/listServer';
+import { adminchat } from './commands/server/adminchat';
+import give from './commands/give';
 
 const client = new Client({
 	intents: [
@@ -41,25 +45,46 @@ client.once(Events.ClientReady, c => {
 client.on(Events.MessageCreate, async (message) => {
 	try {
 		const handleMessage = message.content.toLowerCase();
+		if (handleMessage.includes('b!'))
+			message.channel.sendTyping();
 		if (handleMessage.indexOf(config.prefix) === 0) {
 			const command = handleMessage.split('!');
-			message.channel.sendTyping();
+
 			const commandParts = command[1].split(" ");
 			switch (commandParts[0]) {
 				case 'thongke':
-				case 'stat': {
+				case 'topmilk': {
 					const pagePart = commandParts[1];
 					const page = isInt(pagePart) ? parseInt(pagePart) : 1;
 					await stat(message, client, page);
 					break;
 				}
-				case 'top': {
+				case 's': {
+					await listServer(client, message);
+					break;
+				}
+				case 'chat': {
+					if (message.author.id !== config.ownerIds[0])
+						break;
+					await adminchat(client, message, commandParts[1], commandParts.slice(2).join(" "))
+					break;
+				}
+				case 'give': {
+					if (!isIntOrFloat(commandParts[1])) {
+						message.reply(":woman_gesturing_no: Đừng có mà nhập linh tinh cho bò nè! Nhập số >0 thôi.");
+						break;
+					}
+					await give(client, message, parseFloat(commandParts[1]), commandParts[2]);
+					break;
+				}
+				case 'topmoney': {
 					const pagePart = commandParts[1];
 					const page = isInt(pagePart) ? parseInt(pagePart) : 1;
 					await moneyStat(message, client, page);
 					break;
 				}
 				case 'setratio': {
+
 					if (!isIntOrFloat(commandParts[1])) {
 						message.reply(":woman_gesturing_no: Đừng có mà nhập linh tinh cho bò nè! Nhập số >0 thôi.");
 						break;
@@ -78,7 +103,6 @@ client.on(Events.MessageCreate, async (message) => {
 					await sell(message, milk);
 					break;
 				}
-				case 'thongtin':
 				case 'info': {
 					const embed = await informationEmbed(client) as unknown as APIEmbed | JSONEncodable<APIEmbed>;
 					message.channel.send({ embeds: [embed] });
@@ -97,7 +121,7 @@ client.on(Events.MessageCreate, async (message) => {
 				}
 
 				case 'xemkho':
-				case 'inven': {
+				case 'inv': {
 					await status(message);
 					break;
 				}
@@ -121,6 +145,7 @@ client.on(Events.MessageCreate, async (message) => {
 					await getRatio(message);
 					break;
 				}
+
 			}
 		}
 	} catch (e) {
@@ -142,6 +167,9 @@ client.on(Events.InteractionCreate, interaction => {
 	}
 	if (interaction.commandName === 'g9') {
 		goodnightSlashCommand.execute(interaction)
+	}
+	if (interaction.commandName === 's') {
+		serverSlashCommand.execute(interaction, client);
 	}
 })
 

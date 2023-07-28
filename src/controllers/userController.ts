@@ -11,9 +11,25 @@ export const getUser = async (userId: string): Promise<User> => {
     return result;
 };
 
-export const addUser = async (user: User) => {
+export const addUser = async (name: string, id: string, milk: number) => {
+    const user: User = {
+        _id: new mongoose.Types.ObjectId(),
+        userTagName: name,
+        numberOfCow: 1,
+        cow: {
+            strength: 100,
+            dateOfBirth: new Date(),
+            lastFeedingTime: new Date(),
+        },
+        userId: id,
+        lastTimeTakeMilk: new Date(),
+        milkTank: [{ milk, takingTime: new Date() }],
+        money: 0,
+        totalMilk: milk,
+    };
     const newUser = new UserModel(user);
     newUser.save();
+    return newUser;
 };
 
 export const updateUser = async (id: mongoose.Types.ObjectId, updateUser: any) => {
@@ -41,7 +57,7 @@ export const getTopNUser = async (userId: string, page: number, client: any) => 
     }
     const statList = fetchList.filter((user) => !!user);
     for (let i = 0; i < statList.length; i++) {
-        statBoard += `${startIndex + i + 1}. ${removeTag(statList[i].tag)} - ${statRank[i].totalMilk
+        statBoard += `${startIndex + i + 1}. ${removeTag(statList[i].tag)} - ${roundDouble(statRank[i].totalMilk)
             } lít sữa\n`;
     }
 
@@ -174,4 +190,21 @@ export const takeMoney = async (user: User) => {
         { new: true }
     );
 
+}
+
+export const giveMoney = async (user: User, money: number) => {
+    await UserModel.findByIdAndUpdate(
+        user._id,
+        { $set: { 'money': user.money - money } },
+        { new: true }
+    );
+
+}
+
+export const receiveMoney = async (user: User, money: number) => {
+    await UserModel.findByIdAndUpdate(
+        user._id,
+        { $set: { 'money': user.money + money } },
+        { new: true }
+    );
 }

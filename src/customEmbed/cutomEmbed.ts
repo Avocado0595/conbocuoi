@@ -7,20 +7,16 @@ const avatarLink = config.avatarLink;
 export const helpEmbed = async (client: Client) => {
 	return new EmbedBuilder()
 		.setColor([0, 153, 255])
-		.setTitle('Bot Con Bò Cười')
+		.setTitle('Chào mừng đến với Bot Con Bò Cười!')
 
 		.setAuthor({ name: 'Bot Con Bò Cười', iconURL: avatarLink })
-		.setDescription(
-			'Chào mừng đến với Bot Con Bò Cười!\nXem danh sách lệnh dưới đây nhé!'
-		)
 		.setThumbnail(avatarLink)
 		.addFields(
-			{ name: 'b!thongtin hoặc b!info', value: 'Xem thông tin' },
-			{ name: 'Chăn bò online', value: '**b!vatsua hoặc b!milk**: Bắt đầu vắt sữa bò\n**b!xemkho hoặc b!inven**: Xem kho bạn có gì nào?\n**b!anco hoặc b!eat**: Cho bò ăn để có sữa nhé\n **b!sell x**: Bán đi x lít sữa' },
-			{ name: 'b!thongke hoặc b!stat', value: 'Xem bảng thống kê' },
-			{ name: 'b!ratio', value: 'Xem tỷ giá sữa' },
-			{ name: 'b!xemmeo hoặc b!cat', value: 'Random ra ảnh con mòe' },
-			{ name: 'b!cow', value: `Random ra ảnh con bò (đôi khi rất xịn xò) - **Giá ${config.imagePrice}cc**` },
+			{ name: 'b! + lệnh tương ứng', value: '\u200b' },
+			{ name: 'Chăn bò online', value: '``milk (vắt sữa bò)``, ``eat (cho bò ăn)`` ,``inv (xem kho)``' },
+			{ name: 'Kinh doanh với bò', value: '``topmilk (bxh sữa)``, ``topmoney (bxh cowcoin)``, ``sell x (bán x lít sữa)``, ``ratio (xem tỷ giá sữa)``, ``give x y (cho y x cc)``' },
+			{ name: 'Giải trí với bò', value: '``cow (xem ảnh bò - tốn ' + `${config.imagePrice}cc` + ')`` ,``cat (xem ảnh mòe)``, ``s (vũ trụ có bò)``' },
+			{ name: 'b!info', value: 'Xem một vài thông số của bò.' },
 		)
 		.setTimestamp()
 		.setFooter(await footerEmbed(client));
@@ -36,7 +32,7 @@ export const statsEmbed = async (title, user, userRank, top, page, totalPage, cl
 		.setThumbnail(avatarLink)
 		.addFields(
 			{ name: `**Thứ hạng của bạn:** ${userRank} - ${user ? user.totalMilk : 0} lít sữa`, value: '\u200b ' },
-			{ name: 'Hãy tiếp tục vắt sữa nhé', value: `\nTrang: ${page}/${totalPage} - b!thongke ${'số trang'}` },
+			{ name: 'Hãy tiếp tục vắt sữa nhé', value: `\nTrang: ${page}/${totalPage} - b!topmilk hoặc b!topmoney + số trang` },
 		)
 		.setTimestamp()
 		.setFooter(await footerEmbed(client));
