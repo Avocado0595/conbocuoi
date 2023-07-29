@@ -1,6 +1,4 @@
-import config from '../config/config';
-import roundDouble from '../helpers/roundDouble';
-import randomRange from '../helpers/randomRange';
+
 import {
 	decStrength,
 	getUser,
@@ -11,6 +9,9 @@ import {
 import { Message } from 'discord.js';
 import { User } from '../models/userModel';
 import mongoose from 'mongoose';
+import  config  from '../config/config';
+import { randomRange, roundDouble } from '../helpers';
+
 
 const milk = async (message: Message) => {
 	const user = await getUser(message.author.id),

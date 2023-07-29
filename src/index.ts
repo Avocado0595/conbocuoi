@@ -1,29 +1,15 @@
 import dotenv from 'dotenv';
 import { APIEmbed, Client, Events, GatewayIntentBits, JSONEncodable, Partials, TextChannel } from 'discord.js';
 import connect from './database/database';
-import milk from './commands/milk';
-import feed from './commands/feed';
+import {milk , feed, status, moneyStat, sell, stat, give, randomCat, randomImage, setRatio, getRatio} from './commands';
 import { helpEmbed } from './customEmbed/cutomEmbed';
-import stat from './commands/stat';
-import status from './commands/status';
 import config from './config/config';
-import randomCat from './commands/randomCat';
 import express from 'express';
 import cors from 'cors';
 import { informationEmbed } from './commands/information';
-import setRatio from './commands/setRatio';
-import getRatio from './commands/getRatio';
-import { commands } from './slashcommand/slashcommands';
-import * as pingSlashCommand from './slashcommand/ping'
-import * as goodnightSlashCommand from './slashcommand/goodnight'
-import * as serverSlashCommand from './slashcommand/server/serever-slash'
-import randomImage from './commands/randomImage';
-import sell from './commands/sell';
-import { isInt, isIntOrFloat } from './helpers/isValidNumber';
-import moneyStat from './commands/moneyStat';
-import listServer from './commands/server/listServer';
-import { adminchat } from './commands/server/adminchat';
-import give from './commands/give';
+import { commands, executes } from './slashcommand/slashcommands';
+import { adminchat, listServer } from './commands/server';
+import { isInt, isIntOrFloat } from './helpers';
 
 const client = new Client({
 	intents: [
@@ -163,13 +149,16 @@ client.on(Events.MessageCreate, async (message) => {
 client.on(Events.InteractionCreate, interaction => {
 	if (!interaction.isChatInputCommand()) return;
 	if (interaction.commandName === "ping") {
-		pingSlashCommand.execute(interaction)
+		executes.pingSlashCommand.execute(interaction)
 	}
 	if (interaction.commandName === 'g9') {
-		goodnightSlashCommand.execute(interaction)
+		executes.goodnightSlashCommand.execute(interaction)
 	}
 	if (interaction.commandName === 's') {
-		serverSlashCommand.execute(interaction, client);
+		executes.serverSlashCommand.execute(interaction, client);
+	}
+	if (interaction.commandName === 'milk') {
+		executes.milkSlashCommand.execute(interaction);
 	}
 })
 

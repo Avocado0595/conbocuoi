@@ -1,10 +1,10 @@
 import { User, UserModel } from '../models/userModel';
 import randomRange from '../helpers/randomRange';
 import roundDouble from '../helpers/roundDouble';
-import config from '../config/config';
 import removeTag from '../helpers/removeTag';
 import mongoose from 'mongoose';
 import { getCurrentRatio } from './moneyController';
+import config from '../config/config';
 
 export const getUser = async (userId: string): Promise<User> => {
     const result = await UserModel.findOne({ userId });

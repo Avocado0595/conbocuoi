@@ -1,6 +1,6 @@
 import { Client, EmbedBuilder } from "discord.js";
-import config from "../config/config";
 import footerEmbed from "../customEmbed/footerEmbed";
+import config from "../config/config";
 
 const avatarLink = config.avatarLink;
 export const informationEmbed = async (client: Client) => {
