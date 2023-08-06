@@ -1,5 +1,4 @@
 import { Message } from 'discord.js';
-import axios from 'axios';
 import { getRandomImage } from '../controllers/imageController';
 import { ImageTypes } from '../models/imageModel';
 import { getUser, takeMoney } from '../controllers/userController';

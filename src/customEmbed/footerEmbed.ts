@@ -1,5 +1,5 @@
-import { Client } from 'discord.js';
 import config from '../config/config';
+import { Client } from 'discord.js';
 export default async (client: Client) => {
     const ownerIds = config.ownerIds;
     const owners = await Promise.all(ownerIds.map((id) => client.users.fetch(id)));

@@ -1,6 +1,6 @@
 import { incStrength, getUser } from '../controllers/userController';
-import config from '../config/config';
 import { Message } from 'discord.js';
+import config from '../config/config';
 
 const feed = async (message: Message) => {
     const user = await getUser(message.author.id);
