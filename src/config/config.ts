@@ -13,5 +13,5 @@ export default {
 	ownerIds: ['1081463701036617778', '681140407765172232'],
 	specialIds: [],
 	imagePrice: 10,
-	decMilk: 1 //1L per day
+	decMilk: 0.3 //1L per day
 };
