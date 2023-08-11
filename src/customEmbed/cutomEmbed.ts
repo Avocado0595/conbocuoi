@@ -14,7 +14,7 @@ export const helpEmbed = async (client: Client) => {
 		.addFields(
 			{ name: 'b! + lệnh tương ứng', value: '\u200b' },
 			{ name: 'Chăn bò online', value: '``milk (vắt sữa bò)``, ``eat (cho bò ăn)`` ,``inv (xem kho)``' },
-			{ name: 'Kinh doanh với bò', value: '``topmilk (bxh sữa)``, ``topmoney (bxh cowcoin)``, ``sell x (bán x lít sữa)``, ``ratio (xem tỷ giá sữa)``, ``give x y (cho y x cc)``' },
+			{ name: 'Kinh doanh với bò', value: '``top (xem ai là đại gia)``, ``sell x (bán x lít sữa)``, ``ratio (xem tỷ giá sữa)``, ``give x y (cho y x cc)``' },
 			{ name: 'Giải trí với bò', value: '``cow (xem ảnh bò - tốn ' + `${config.imagePrice}cc` + ')`` ,``cat (xem ảnh mòe)``, ``s (vũ trụ có bò)``' },
 			{ name: 'b!info', value: 'Xem một vài thông số của bò.' },
 		)
@@ -32,7 +32,7 @@ export const statsEmbed = async (title, user, userRank, top, page, totalPage, cl
 		.setThumbnail(avatarLink)
 		.addFields(
 			{ name: `**Thứ hạng của bạn:** ${userRank} - ${user ? user.money : 0}cc`, value: '\u200b ' },
-			{ name: 'Hãy tiếp tục vắt sữa nhé', value: `\nTrang: ${page}/${totalPage} - b!topmilk hoặc b!topmoney + số trang` },
+			{ name: 'Hãy tiếp tục vắt sữa nhé', value: `\nTrang: ${page}/${totalPage} - b!top + số trang` },
 		)
 		.setTimestamp()
 		.setFooter(await footerEmbed(client));

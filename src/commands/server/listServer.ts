@@ -6,7 +6,7 @@ const listServer = async (client: Client, message: Message | ChatInputCommandInt
     client.guilds.cache.forEach(guild => {
         serverList.push(`${guild.name} | ${guild.id}`);
     })
-    message.reply(
+    await message.reply(
         "Total: " + serverList.length + " servers\n" +
         serverList.map((s, index) => `${index}. ${s}`).join("\n")
     );

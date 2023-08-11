@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import { APIEmbed, Client, Events, GatewayIntentBits, JSONEncodable, Partials, TextChannel } from 'discord.js';
+import { APIEmbed, Client, Events, GatewayIntentBits, JSONEncodable, Message, Partials, TextChannel } from 'discord.js';
 import connect from './database/database';
 import { milk, feed, status, moneyStat, sell, stat, give, randomCat, randomImage, setRatio, getRatio } from './commands';
 import { helpEmbed } from './customEmbed/cutomEmbed';
@@ -29,7 +29,7 @@ client.once(Events.ClientReady, c => {
 	console.log(`Logged in as ${c.user.tag}!`);
 	client.application?.commands.set(commands);
 });
-client.on(Events.MessageCreate, async (message) => {
+client.on(Events.MessageCreate, async (message: Message) => {
 	try {
 		const handleMessage = message.content.toLowerCase();
 		if (handleMessage.includes('b!'))
@@ -39,13 +39,13 @@ client.on(Events.MessageCreate, async (message) => {
 			decMilk(message.author.id);
 			const commandParts = command[1].split(" ");
 			switch (commandParts[0]) {
-				case 'thongke':
-				case 'topmilk': {
-					const pagePart = commandParts[1];
-					const page = isInt(pagePart) ? parseInt(pagePart) : 1;
-					await stat(message, client, page);
-					break;
-				}
+				// case 'thongke':
+				// case 'topmilk': {
+				// 	const pagePart = commandParts[1];
+				// 	const page = isInt(pagePart) ? parseInt(pagePart) : 1;
+				// 	await stat(message, client, page);
+				// 	break;
+				// }
 				case 's': {
 					await listServer(client, message);
 					break;
@@ -64,7 +64,7 @@ client.on(Events.MessageCreate, async (message) => {
 					await give(client, message, parseFloat(commandParts[1]), commandParts[2]);
 					break;
 				}
-				case 'topmoney': {
+				case 'top': {
 					const pagePart = commandParts[1];
 					const page = isInt(pagePart) ? parseInt(pagePart) : 1;
 					await moneyStat(message, client, page);
@@ -81,13 +81,7 @@ client.on(Events.MessageCreate, async (message) => {
 					break;
 				}
 				case 'sell': {
-
-					if (!isIntOrFloat(commandParts[1])) {
-						message.reply(":woman_gesturing_no: Đừng có mà nhập linh tinh cho bò nè! Nhập số >0 thôi.");
-						break;
-					}
-					const milk = parseFloat(commandParts[1]);
-					await sell(message, milk);
+					await sell(message, commandParts[1]);
 					break;
 				}
 				case 'info': {
@@ -102,7 +96,8 @@ client.on(Events.MessageCreate, async (message) => {
 				}
 
 				case 'vatsua':
-				case 'milk': {
+				case 'milk':
+				case 'm': {
 					await milk(message);
 					break;
 				}
@@ -160,6 +155,9 @@ client.on(Events.InteractionCreate, interaction => {
 	}
 	if (interaction.commandName === 'milk') {
 		executes.milkSlashCommand.execute(interaction);
+	}
+	if (interaction.commandName === 'sell') {
+		executes.sellSlashCommand.execute(interaction);
 	}
 })
 

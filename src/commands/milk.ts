@@ -1,30 +1,28 @@
 
 import {
-	decStrength,
-	getUser,
-	getTotalMilkByDay,
-	updateUser,
-	addUser,
+    decStrength,
+    getUser,
+    getTotalMilkByDay,
+    updateUser,
+    addUser,
 } from '../controllers/userController';
 import { ChatInputCommandInteraction, Message } from 'discord.js';
 
-import  config  from '../config/config';
+import config from '../config/config';
 import { randomRange, roundDouble } from '../helpers';
 
 
 const milk = async (message: Message | ChatInputCommandInteraction) => {
     let userId: string;
-    let reply: (content: string) => void;
-	let tag: string;
+    const reply = (content: string) => message.reply(content);
+    let tag: string;
 
     if (message instanceof Message) {
         userId = message.author.id;
-		reply = (content: string) => message.reply(content);
-		tag = message.author.tag;
+        tag = message.author.tag;
     } else if (message instanceof ChatInputCommandInteraction) {
         userId = message.user.id;
-        reply = (content: string) => message.reply(content);
-		tag = message.user.tag;
+        tag = message.user.tag;
     } else {
         return;
     }
