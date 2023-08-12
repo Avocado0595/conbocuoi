@@ -13,6 +13,19 @@ const stat = async (message: Message, client: Client, page: number) => {
         client
     );
 
+    // message.channel.send({
+    //     embeds: [
+    //         await statsEmbed(
+    //             "Bảng bảng thống kê sữa",
+    //             user,
+    //             userRank,
+    //             statBoard,
+    //             page <= totalPage ? page : totalPage,
+    //             totalPage, client
+    //         ),
+    //     ],
+    // });
+
     // Convert statBoard to an array of objects
     const stats = statBoard.split('\n').map((line) => {
         const parts = line.split(' - ');
@@ -22,8 +35,7 @@ const stat = async (message: Message, client: Client, page: number) => {
     const userIds = stats.map((stat) => stat.userId);
 
     
-
-    // Send the milk statistics table as an image attachment
+    // gọi hàm sendMilkStats ở dưới
     await sendMilkStats(message, stats, userIds, userRank, totalPage, user, page, client);
 };
 
