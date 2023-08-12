@@ -57,12 +57,14 @@ export const getTopNUser = async (userId: string, page: number, client: any) => 
     }
     const statList = fetchList.filter((user) => !!user);
     for (let i = 0; i < statList.length; i++) {
-        statBoard += `${startIndex + i + 1}. ${removeTag(statList[i].tag)} - ${roundDouble(statRank[i].totalMilk)
+        statBoard += `${startIndex + i + 1} - ${statRank[i].userId} - ${removeTag(statList[i].tag)} - ${roundDouble(statRank[i].totalMilk)
             } lít sữa\n`;
     }
 
     return { statBoard, userRank, totalPage };
 };
+
+
 
 
 export const getTopMoney = async (userId: string, page: number, client: any) => {
