@@ -31,7 +31,7 @@ export const statsEmbed = async (title, user, userRank, top, page, totalPage, cl
 		.setDescription(top)
 		.setThumbnail(avatarLink)
 		.addFields(
-			{ name: `**Thứ hạng của bạn:** ${userRank} - ${user ? user.totalMilk : 0} lít sữa`, value: '\u200b ' },
+			{ name: `**Thứ hạng của bạn:** ${userRank} - ${user ? user.money : 0}cc`, value: '\u200b ' },
 			{ name: 'Hãy tiếp tục vắt sữa nhé', value: `\nTrang: ${page}/${totalPage} - b!topmilk hoặc b!topmoney + số trang` },
 		)
 		.setTimestamp()

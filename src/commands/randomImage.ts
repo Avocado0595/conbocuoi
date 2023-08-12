@@ -3,6 +3,7 @@ import { getRandomImage } from '../controllers/imageController';
 import { ImageTypes } from '../models/imageModel';
 import { getUser, takeMoney } from '../controllers/userController';
 import config from '../config/config';
+import { roundDouble } from '../helpers';
 
 const randomImage = async (message: Message, type: ImageTypes) => {
     const user = await getUser(message.author.id);
@@ -12,7 +13,9 @@ const randomImage = async (message: Message, type: ImageTypes) => {
     }
     await takeMoney(user);
     const imgLink = await getRandomImage(type);
+    const user2 = await getUser(message.author.id);
     message.reply(imgLink.link)
+    message.reply(`\nBạn còn **${roundDouble(user2.money)}cc** trong ví nhé`)
 
 };
 

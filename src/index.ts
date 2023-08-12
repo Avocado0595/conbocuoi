@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import { APIEmbed, Client, Events, GatewayIntentBits, JSONEncodable, Partials, TextChannel } from 'discord.js';
 import connect from './database/database';
-import {milk , feed, status, moneyStat, sell, stat, give, randomCat, randomImage, setRatio, getRatio} from './commands';
+import { milk, feed, status, moneyStat, sell, stat, give, randomCat, randomImage, setRatio, getRatio } from './commands';
 import { helpEmbed } from './customEmbed/cutomEmbed';
 import config from './config/config';
 import express from 'express';
@@ -10,6 +10,7 @@ import { informationEmbed } from './commands/information';
 import { commands, executes } from './slashcommand/slashcommands';
 import { adminchat, listServer } from './commands/server';
 import { isInt, isIntOrFloat } from './helpers';
+import { decMilk } from './controllers/userController';
 
 const client = new Client({
 	intents: [
@@ -35,7 +36,7 @@ client.on(Events.MessageCreate, async (message) => {
 			message.channel.sendTyping();
 		if (handleMessage.indexOf(config.prefix) === 0) {
 			const command = handleMessage.split('!');
-
+			decMilk(message.author.id);
 			const commandParts = command[1].split(" ");
 			switch (commandParts[0]) {
 				case 'thongke':

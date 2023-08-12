@@ -172,6 +172,21 @@ export const incStrength = async (user: User) => {
     return roundDouble(newStrength);
 };
 
+export const decMilk = async (userId: string) => {
+    const user = await UserModel.findOne({ userId });
+    if (!user)
+        return;
+    const diffTime = new Date().getTime() - new Date((user as any).updatedAt).getTime();
+    const diffDay = (Math.abs(Math.ceil(diffTime / 1000)) / 3600) / 24;
+    const milkDec = user.totalMilk - diffDay * Number(config.decMilk);
+    const newMilk = milkDec >= 0 ? roundDouble(milkDec) : 0;
+    await UserModel.findByIdAndUpdate(
+        user._id,
+        { $set: { 'totalMilk': newMilk } },
+        { new: true }
+    );
+    return roundDouble(newMilk);
+}
 
 export const sell = async (user: User, milk: Number) => {
     const ratio = await getCurrentRatio();
