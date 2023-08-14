@@ -2,8 +2,8 @@
 import { MoneyModel } from '../models/moneyModel';
 
 export const getCurrentRatio = async () => {
-    const result = await MoneyModel.find().sort({ createdAt: -1 });
-    return result[0].ratio;
+    const result = await MoneyModel.findOne().sort();
+    return result.ratio;
 };
 
 export const addRatio = async (ratio: Number) => {

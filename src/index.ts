@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import { APIEmbed, Client, Events, GatewayIntentBits, JSONEncodable, Message, Partials, TextChannel } from 'discord.js';
 import connect from './database/database';
-import { milk, feed, status, moneyStat, sell, stat, give, randomCat, randomImage, setRatio, getRatio } from './commands';
+import { milk, feed, status, moneyStat, sell, give, randomCat, randomImage, setRatio, getRatio } from './commands';
 import { helpEmbed } from './customEmbed/cutomEmbed';
 import config from './config/config';
 import express from 'express';
@@ -11,6 +11,10 @@ import { commands, executes } from './slashcommand/slashcommands';
 import { adminchat, listServer } from './commands/server';
 import { isInt, isIntOrFloat } from './helpers';
 import { decMilk } from './controllers/userController';
+import addComedy from './commands/relax/addComedy';
+import getComedy from './commands/relax/getComedy';
+import verifyComedy from './commands/relax/verifyComedy';
+import { ComedyStatusType } from './models/comedyModel';
 
 const client = new Client({
 	intents: [
@@ -32,12 +36,15 @@ client.once(Events.ClientReady, c => {
 client.on(Events.MessageCreate, async (message: Message) => {
 	try {
 		const handleMessage = message.content.toLowerCase();
+		const rawMessage = message.content;
 		if (handleMessage.includes('b!'))
 			message.channel.sendTyping();
 		if (handleMessage.indexOf(config.prefix) === 0) {
 			const command = handleMessage.split('!');
+			const rawCommand = rawMessage.split('!')
 			decMilk(message.author.id);
 			const commandParts = command[1].split(" ");
+			const rawCommandParts = rawCommand[1].split(" ");
 			switch (commandParts[0]) {
 				// case 'thongke':
 				// case 'topmilk': {
@@ -127,6 +134,18 @@ client.on(Events.MessageCreate, async (message: Message) => {
 					await getRatio(message);
 					break;
 				}
+				case 'joke': {
+					await addComedy(message, rawCommandParts.slice(1).join(' '));
+					break;
+				}
+				case 'happy': {
+					await getComedy(message);
+					break;
+				}
+				case 'verify-joke': {
+					await verifyComedy(message, commandParts[1], commandParts[2] as ComedyStatusType);
+					break;
+				}
 
 			}
 		}
@@ -144,20 +163,30 @@ client.on(Events.MessageCreate, async (message: Message) => {
 
 client.on(Events.InteractionCreate, interaction => {
 	if (!interaction.isChatInputCommand()) return;
-	if (interaction.commandName === "ping") {
-		executes.pingSlashCommand.execute(interaction)
-	}
-	if (interaction.commandName === 'g9') {
-		executes.goodnightSlashCommand.execute(interaction)
-	}
-	if (interaction.commandName === 's') {
-		executes.serverSlashCommand.execute(interaction, client);
-	}
-	if (interaction.commandName === 'milk') {
-		executes.milkSlashCommand.execute(interaction);
-	}
-	if (interaction.commandName === 'sell') {
-		executes.sellSlashCommand.execute(interaction);
+	switch (interaction.commandName) {
+		case 'ping':
+			executes.pingSlashCommand.execute(interaction)
+			break;
+		case 'g9':
+			executes.goodnightSlashCommand.execute(interaction)
+			break;
+		case 's':
+			executes.serverSlashCommand.execute(interaction, client);
+			break;
+		case 'milk':
+			executes.milkSlashCommand.execute(interaction);
+			break;
+		case 'sell':
+			executes.sellSlashCommand.execute(interaction);
+			break;
+		case 'happy':
+			executes.getComedyCommand.execute(interaction);
+			break;
+		case 'cow':
+			executes.cowCommand.execute(interaction);
+			break;
+		default:
+			break;
 	}
 })
 

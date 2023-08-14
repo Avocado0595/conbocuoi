@@ -1,21 +1,32 @@
-import { Message } from 'discord.js';
+import { ChatInputCommandInteraction, Message } from 'discord.js';
 import { getRandomImage } from '../controllers/imageController';
 import { ImageTypes } from '../models/imageModel';
 import { getUser, takeMoney } from '../controllers/userController';
 import config from '../config/config';
 import { roundDouble } from '../helpers';
-
-const randomImage = async (message: Message, type: ImageTypes) => {
-    const user = await getUser(message.author.id);
-    if (user.money < config.imagePrice) {
-        message.reply("Ôi không, bạn không đủ tiền mất rồi :woman_shrugging:\nChăm chỉ vắt sữa bán kiếm tiền nhé!")
+import checkMoney from '../helpers/checkMoney';
+const randomImage = async (message: Message | ChatInputCommandInteraction, type: ImageTypes) => {
+    const isEnoughMoney = await checkMoney(message, config.imagePrice);
+    if (!isEnoughMoney)
         return;
+    let userId = null;
+    if (message instanceof Message) {
+        userId = message.author.id;
     }
-    await takeMoney(user);
+    else {
+        userId = message.user.id;
+    }
     const imgLink = await getRandomImage(type);
-    const user2 = await getUser(message.author.id);
-    message.reply(imgLink.link)
-    message.reply(`\nBạn còn **${roundDouble(user2.money)}cc** trong ví nhé`)
+    const user2 = await getUser(userId);
+    if (message instanceof Message) {
+        message.reply(imgLink.link)
+        message.reply(`\nBạn còn **${roundDouble(user2.money)}cc** trong ví nhé`)
+    }
+    else {
+        message.reply(imgLink.link);
+        message.editReply(`\nBạn còn **${roundDouble(user2.money)}cc** trong ví nhé`);
+    }
+
 
 };
 

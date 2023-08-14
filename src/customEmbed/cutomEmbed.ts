@@ -12,10 +12,10 @@ export const helpEmbed = async (client: Client) => {
 		.setAuthor({ name: 'Bot Con Bò Cười', iconURL: avatarLink })
 		.setThumbnail(avatarLink)
 		.addFields(
-			{ name: 'b! + lệnh tương ứng', value: '\u200b' },
+			{ name: 'b! + lệnh tương ứng hoặc dùng slash command {/}', value: '\u200b' },
 			{ name: 'Chăn bò online', value: '``milk (vắt sữa bò)``, ``eat (cho bò ăn)`` ,``inv (xem kho)``' },
 			{ name: 'Kinh doanh với bò', value: '``top (xem ai là đại gia)``, ``sell x (bán x lít sữa)``, ``ratio (xem tỷ giá sữa)``, ``give x y (cho y x cc)``' },
-			{ name: 'Giải trí với bò', value: '``cow (xem ảnh bò - tốn ' + `${config.imagePrice}cc` + ')`` ,``cat (xem ảnh mòe)``, ``s (vũ trụ có bò)``' },
+			{ name: 'Giải trí với bò', value: '``cow (xem ảnh bò - tốn ' + `${config.imagePrice}cc` + ')`` ,``cat (xem ảnh mòe)``,``happy (đọc truyện cười - tốn ' + `${config.getJokePrice}cc` + ')``, ``joke noidung (đóng góp truyện cười, nếu được duyệt bạn sẽ được' + `${config.addJokePrice}cc` + ')`` , ``s (vũ trụ có bò)``' },
 			{ name: 'b!info', value: 'Xem một vài thông số của bò.' },
 		)
 		.setTimestamp()
