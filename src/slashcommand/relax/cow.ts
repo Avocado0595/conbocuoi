@@ -1,13 +1,13 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { ChatInputCommandInteraction, Client } from 'discord.js';
-import { randomImage } from '../../commands';
+import { randomImage } from '../../commands/relax';
 
 const data = new SlashCommandBuilder()
     .setName('cow')
     .setDescription('Xem ảnh bò vjpro');
 
 async function execute(interaction: ChatInputCommandInteraction) {
-    await randomImage(interaction, 'bocute');
+    return await randomImage(interaction, 'bocute');
 }
 
 export { data, execute };

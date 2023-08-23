@@ -1,20 +1,23 @@
 import dotenv from 'dotenv';
-import { APIEmbed, Client, Events, GatewayIntentBits, JSONEncodable, Message, Partials, TextChannel } from 'discord.js';
+import { APIEmbed, Client, Events, GatewayIntentBits, JSONEncodable, Message, Partials } from 'discord.js';
 import connect from './database/database';
-import { milk, feed, status, moneyStat, sell, give, randomCat, randomImage, setRatio, getRatio } from './commands';
 import { helpEmbed } from './customEmbed/cutomEmbed';
 import config from './config/config';
 import express from 'express';
 import cors from 'cors';
-import { informationEmbed } from './commands/information';
 import { commands, executes } from './slashcommand/slashcommands';
-import { adminchat, listServer } from './commands/server';
+import { listServer, randomCat, randomImage } from './commands/relax';
 import { isInt, isIntOrFloat } from './helpers';
 import { decMilk } from './controllers/userController';
-import addComedy from './commands/relax/addComedy';
-import getComedy from './commands/relax/getComedy';
-import verifyComedy from './commands/relax/verifyComedy';
+import addComedy from './commands/relax/addJoke';
+import getComedy from './commands/relax/getJoke';
 import { ComedyStatusType } from './models/comedyModel';
+import { feed, inventory, milk } from './commands/cow';
+
+import { adminchat, setRatio, verifyJoke } from './commands/admin'
+import { getRatio, give, sell } from './commands/money';
+import { moneyStat } from './commands';
+import informationEmbed from './commands/information';
 
 const client = new Client({
 	intents: [
@@ -46,13 +49,6 @@ client.on(Events.MessageCreate, async (message: Message) => {
 			const commandParts = command[1].split(" ");
 			const rawCommandParts = rawCommand[1].split(" ");
 			switch (commandParts[0]) {
-				// case 'thongke':
-				// case 'topmilk': {
-				// 	const pagePart = commandParts[1];
-				// 	const page = isInt(pagePart) ? parseInt(pagePart) : 1;
-				// 	await stat(message, client, page);
-				// 	break;
-				// }
 				case 's': {
 					await listServer(client, message);
 					break;
@@ -60,7 +56,11 @@ client.on(Events.MessageCreate, async (message: Message) => {
 				case 'chat': {
 					if (message.author.id !== config.ownerIds[0])
 						break;
-					await adminchat(client, message, commandParts[1], commandParts.slice(2).join(" "))
+					await adminchat(message.author.id, client, commandParts[1], rawCommandParts.slice(2).join(' '));
+					break;
+				}
+				case 'joke': {
+					await addComedy(message, rawCommandParts.slice(1).join(' '));
 					break;
 				}
 				case 'give': {
@@ -111,7 +111,7 @@ client.on(Events.MessageCreate, async (message: Message) => {
 
 				case 'xemkho':
 				case 'inv': {
-					await status(message);
+					await inventory(client, message);
 					break;
 				}
 
@@ -134,16 +134,13 @@ client.on(Events.MessageCreate, async (message: Message) => {
 					await getRatio(message);
 					break;
 				}
-				case 'joke': {
-					await addComedy(message, rawCommandParts.slice(1).join(' '));
-					break;
-				}
+
 				case 'happy': {
 					await getComedy(message);
 					break;
 				}
 				case 'verify-joke': {
-					await verifyComedy(message, commandParts[1], commandParts[2] as ComedyStatusType);
+					await verifyJoke(message, commandParts[1], commandParts[2] as ComedyStatusType);
 					break;
 				}
 
@@ -169,6 +166,9 @@ client.on(Events.InteractionCreate, interaction => {
 			break;
 		case 'g9':
 			executes.goodnightSlashCommand.execute(interaction)
+			break;
+		case 'help':
+			executes.helpCommand.execute(interaction, client);
 			break;
 		case 's':
 			executes.serverSlashCommand.execute(interaction, client);

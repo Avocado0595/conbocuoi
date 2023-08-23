@@ -1,6 +1,6 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { ChatInputCommandInteraction, Client } from 'discord.js';
-import getComedy from '../../commands/relax/getComedy';
+import getComedy from '../../commands/relax/getJoke';
 
 const data = new SlashCommandBuilder()
     .setName('happy')

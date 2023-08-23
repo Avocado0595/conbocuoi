@@ -1,10 +1,19 @@
 
 import { ChatInputCommandInteraction, Message } from 'discord.js';
-import { getUser, sell as s } from '../controllers/userController';
-import { isIntOrFloat } from '../helpers';
+import { getUser, sell as s } from '../../controllers/userController';
+import { isIntOrFloat } from '../../helpers';
 
 const sell = async (message: Message | ChatInputCommandInteraction, milk: number | string) => {
+    let userId = null;
+    if (message instanceof Message) {
+        userId = message.author.id;
+    }
+    else {
+        userId = message.user.id;
+    }
+    const user = await getUser(userId);
 
+    if (milk === -9999) milk = user.totalMilk
     if (!isIntOrFloat('' + milk)) {
         await message.reply(":woman_gesturing_no: Đừng có mà nhập linh tinh cho bò nè! Nhập số >0 thôi.");
         return;
@@ -14,14 +23,8 @@ const sell = async (message: Message | ChatInputCommandInteraction, milk: number
         await message.reply(":woman_gesturing_no: Đừng có mà nhập linh tinh cho bò nè! Nhập số >0 thôi.");
         return;
     }
-    let userId = null;
-    if (message instanceof Message) {
-        userId = message.author.id;
-    }
-    else {
-        userId = message.user.id;
-    }
-    const user = await getUser(userId);
+
+
     if (!user) {
         await message.reply('Chưa vắt sữa thì sao có sữa mà bán hả!');
         return;

@@ -1,7 +1,7 @@
 
 import { Client, Message } from 'discord.js';
-import { addUser, getUser, giveMoney, receiveMoney, sell as s } from '../controllers/userController';
-import roundDouble from '../helpers/roundDouble';
+import { addUser, getUser, giveMoney, addMoney, sell as s } from '../../controllers/userController';
+import roundDouble from '../../helpers/roundDouble';
 
 const give = async (client: Client, message: Message, amount: number, receiverId: string) => {
     if (!receiverId) {
@@ -27,7 +27,7 @@ const give = async (client: Client, message: Message, amount: number, receiverId
     }
 
     await giveMoney(sender, amount);
-    await receiveMoney(receiver, amount);
+    await addMoney(receiver.userId, amount);
     message.reply(`Bạn đã cho ${u.username} ${roundDouble(amount)}cc`);
     return;
 };

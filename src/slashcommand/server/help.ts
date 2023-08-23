@@ -1,13 +1,13 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { ChatInputCommandInteraction, Client } from 'discord.js';
-import listServer from '../../commands/relax/listServer';
+import help from '../../commands/help';
 
 const data = new SlashCommandBuilder()
-    .setName('s')
-    .setDescription('Xem list server có bò');
+    .setName('help')
+    .setDescription('Đọc kỹ HDSD trước khi dùng');
 
 async function execute(interaction: ChatInputCommandInteraction, client: Client) {
-    await listServer(client, interaction)
+    await help(client)
 }
 
 export { data, execute };

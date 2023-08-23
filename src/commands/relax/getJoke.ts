@@ -3,18 +3,15 @@ import { getRandomComedy } from '../../controllers/comedyController';
 import config from '../../config/config';
 import checkMoney from '../../helpers/checkMoney';
 import { getUser } from '../../controllers/userController';
-import { roundDouble } from '../../helpers';
 
-const getComedy = async (message: Message | ChatInputCommandInteraction) => {
+const getJoke = async (message: Message | ChatInputCommandInteraction) => {
     const isEnoughMoney = await checkMoney(message, config.getJokePrice);
     if (!isEnoughMoney)
         return;
     const comedy = await getRandomComedy();
-
-    const user2 = await getUser(comedy.author);
-
-    await message.reply(`${comedy.content}\n\n*Bạn còn **${roundDouble(user2.money)}cc** trong ví nhé*`)
+    const userUpdated = await getUser(comedy.author);
+    await message.reply(`${comedy.content}\n\n*Bạn còn **${userUpdated.money.toFixed(2)}cc** trong ví nhé*`)
 
 };
 
-export default getComedy;
+export default getJoke;

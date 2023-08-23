@@ -1,4 +1,4 @@
-import { milk } from "../commands";
+import { milk } from "../commands/cow";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { ChatInputCommandInteraction } from "discord.js";
 

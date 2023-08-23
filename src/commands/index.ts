@@ -1,11 +1,6 @@
-export { default as milk } from './milk';
-export { default as give } from './give';
-export { default as feed } from './feed';
-export { default as status } from './status';
-export { default as moneyStat } from './moneyStat';
-export { default as sell} from './sell';
+export { default as moneyStat } from './moneyStat';;
 export { default as stat } from './stat';
-export { default as randomCat } from './randomCat';
-export { default as randomImage } from './randomImage';
-export { default as setRatio } from './setRatio';
-export { default as getRatio } from './getRatio';
+export { default as information } from './information';
+export { default as help } from './help';
+
+

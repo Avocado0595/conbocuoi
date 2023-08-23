@@ -16,5 +16,6 @@ export default {
 	decMilk: 0.5, //L per day,
 	coolDownForAddJoke: 1,//1day
 	getJokePrice: 15,
-	addJokePrice: 30
+	addJokePrice: 30,
+	minCowStrength: 45,
 };

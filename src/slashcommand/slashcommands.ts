@@ -5,6 +5,7 @@ import * as milkSlashCommand from './milk';
 import * as sellSlashCommand from './trading/sell'
 import * as getComedyCommand from './relax/getComedy'
 import * as cowCommand from './relax/cow'
+import * as helpCommand from './server/help'
 export const commands = [
     pingSlashCommand.data.toJSON(),
     goodnightSlashCommand.data.toJSON(),
@@ -13,6 +14,7 @@ export const commands = [
     sellSlashCommand.data.toJSON(),
     getComedyCommand.data.toJSON(),
     cowCommand.data.toJSON(),
+    helpCommand.data.toJSON()
 ];
 
 export const executes = {
@@ -22,5 +24,6 @@ export const executes = {
     milkSlashCommand,
     sellSlashCommand,
     getComedyCommand,
-    cowCommand
+    cowCommand,
+    helpCommand
 }

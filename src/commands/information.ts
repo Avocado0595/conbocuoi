@@ -3,7 +3,7 @@ import footerEmbed from "../customEmbed/footerEmbed";
 import config from "../config/config";
 
 const avatarLink = config.avatarLink;
-export const informationEmbed = async (client: Client) => {
+const informationEmbed = async (client: Client) => {
     return new EmbedBuilder()
         .setColor([0, 153, 255])
         .setTitle('Bot Con Bò Cười')
@@ -15,3 +15,5 @@ export const informationEmbed = async (client: Client) => {
         .setTimestamp()
         .setFooter(await footerEmbed(client));
 }
+
+export default informationEmbed;

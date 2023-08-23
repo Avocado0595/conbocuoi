@@ -147,10 +147,8 @@ export const decStrength = async (user: User) => {
 
 
 export const incStrength = async (user: User) => {
-    const randNew = roundDouble(
-        user.cow.strength +
-        randomRange(config.incStrengthMax, config.incStrengthMin)
-    ),
+    const randNew = user.cow.strength +
+        randomRange(config.incStrengthMax, config.incStrengthMin),
         newStrength = randNew <= 100 ? randNew : 100,
         updatedCow = {
             ...user.cow,
@@ -167,7 +165,7 @@ export const incStrength = async (user: User) => {
         },
         { new: true }
     );
-    return roundDouble(newStrength);
+    return newStrength;
 };
 
 export const decMilk = async (userId: string) => {
@@ -199,12 +197,13 @@ export const sell = async (user: User, milk: Number) => {
 }
 
 export const takeMoney = async (user: User) => {
+    const newMoney = user.money - config.imagePrice;
     await UserModel.findByIdAndUpdate(
         user._id,
-        { $set: { 'money': user.money - config.imagePrice } },
+        { $set: { 'money': newMoney } },
         { new: true }
     );
-
+    return newMoney;
 }
 
 export const giveMoney = async (user: User, money: number) => {
@@ -216,10 +215,10 @@ export const giveMoney = async (user: User, money: number) => {
 
 }
 
-export const receiveMoney = async (user: User, money: number) => {
-    await UserModel.findByIdAndUpdate(
-        user._id,
-        { $set: { 'money': user.money + money } },
+export const addMoney = async (_id: string, money: number) => {
+    return await UserModel.findByIdAndUpdate(
+        _id,
+        { $inc: { 'money': money } },
         { new: true }
     );
 }
