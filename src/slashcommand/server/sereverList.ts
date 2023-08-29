@@ -10,4 +10,4 @@ async function execute(interaction: ChatInputCommandInteraction, client: Client)
     await listServer(client, interaction)
 }
 
-export { data, execute };
+export default { data, execute };

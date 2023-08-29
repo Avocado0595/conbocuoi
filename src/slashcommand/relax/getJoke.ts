@@ -1,13 +1,13 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { ChatInputCommandInteraction, Client } from 'discord.js';
-import getComedy from '../../commands/relax/getJoke';
+import { ChatInputCommandInteraction } from 'discord.js';
+import getJoke from '../../commands/relax/getJoke';
 
 const data = new SlashCommandBuilder()
     .setName('happy')
     .setDescription('Bò kể truyện cười');
 
 async function execute(interaction: ChatInputCommandInteraction) {
-    await getComedy(interaction)
+    await getJoke(interaction)
 }
 
-export { data, execute };
+export default { data, execute };

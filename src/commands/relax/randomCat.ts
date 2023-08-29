@@ -1,7 +1,7 @@
 
-import { Message } from 'discord.js';
+import { ChatInputCommandInteraction, Message } from 'discord.js';
 import axios from 'axios';
-const randomCat = async (message: Message) => {
+const randomCat = async (message: Message | ChatInputCommandInteraction) => {
 
     const a = await axios.get('https://cataas.com/cat', {
         responseType: 'arraybuffer'

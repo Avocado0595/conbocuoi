@@ -3,7 +3,7 @@ import { ChatInputCommandInteraction, Message } from 'discord.js';
 import config from '../../config/config';
 import { getMessageUser } from '../../helpers';
 
-const feed = async (message: Message | ChatInputCommandInteraction) => {
+const eat = async (message: Message | ChatInputCommandInteraction) => {
     const messUser = getMessageUser(message);
     const user = await getUser(messUser.id);
     if (user) {
@@ -23,8 +23,8 @@ const feed = async (message: Message | ChatInputCommandInteraction) => {
             else message.reply('Bò no rồi, không cần ăn nữa đâu!');
         }
     } else {
-        message.reply('Bạn vừa vào trang trại, có thể b!vatsua ngay nhé !');
+        message.reply('Bạn vừa vào trang trại, có thể **b!milk** ngay và luôn!');
     }
 };
 
-export default feed;
+export default eat;

@@ -14,4 +14,4 @@ async function execute(interaction: ChatInputCommandInteraction) {
     await sell(interaction, interaction.options.getNumber('amount'));
 }
 
-export { data, execute };
+export default { data, execute };

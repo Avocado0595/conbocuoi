@@ -1,22 +1,19 @@
 import dotenv from 'dotenv';
 import { APIEmbed, Client, Events, GatewayIntentBits, JSONEncodable, Message, Partials } from 'discord.js';
 import connect from './database/database';
-import { helpEmbed } from './customEmbed/cutomEmbed';
 import config from './config/config';
 import express from 'express';
 import cors from 'cors';
 import { commands, executes } from './slashcommand/slashcommands';
 import { listServer, randomCat, randomImage } from './commands/relax';
-import { isInt, isIntOrFloat } from './helpers';
+import { isIntOrFloat } from './helpers';
 import { decMilk } from './controllers/userController';
-import addComedy from './commands/relax/addJoke';
-import getComedy from './commands/relax/getJoke';
+import { addJoke, getJoke } from './commands/relax';
 import { ComedyStatusType } from './models/comedyModel';
-import { feed, inventory, milk } from './commands/cow';
-
+import { eat, inventory, milk } from './commands/cow';
 import { adminchat, setRatio, verifyJoke } from './commands/admin'
-import { getRatio, give, sell } from './commands/money';
-import { moneyStat } from './commands';
+import { getRatio, give, moneyStat, sell } from './commands/money';
+import { help } from './commands';
 import informationEmbed from './commands/information';
 
 const client = new Client({
@@ -49,32 +46,25 @@ client.on(Events.MessageCreate, async (message: Message) => {
 			const commandParts = command[1].split(" ");
 			const rawCommandParts = rawCommand[1].split(" ");
 			switch (commandParts[0]) {
+				//sever
 				case 's': {
 					await listServer(client, message);
 					break;
 				}
+				case 'help': {
+					await help(message, client);
+					break;
+				}
+				case 'info': {
+					const embed = await informationEmbed(client) as unknown as APIEmbed | JSONEncodable<APIEmbed>;
+					message.channel.send({ embeds: [embed] });
+					break;
+				}
+				//admin
 				case 'chat': {
 					if (message.author.id !== config.ownerIds[0])
 						break;
 					await adminchat(message.author.id, client, commandParts[1], rawCommandParts.slice(2).join(' '));
-					break;
-				}
-				case 'joke': {
-					await addComedy(message, rawCommandParts.slice(1).join(' '));
-					break;
-				}
-				case 'give': {
-					if (!isIntOrFloat(commandParts[1])) {
-						message.reply(":woman_gesturing_no: Đừng có mà nhập linh tinh cho bò nè! Nhập số >0 thôi.");
-						break;
-					}
-					await give(client, message, parseFloat(commandParts[1]), commandParts[2]);
-					break;
-				}
-				case 'top': {
-					const pagePart = commandParts[1];
-					const page = isInt(pagePart) ? parseInt(pagePart) : 1;
-					await moneyStat(message, client, page);
 					break;
 				}
 				case 'setratio': {
@@ -87,37 +77,44 @@ client.on(Events.MessageCreate, async (message: Message) => {
 					await setRatio(message, ratio);
 					break;
 				}
+				//relax
+				case 'joke': {
+					await addJoke(message, rawCommandParts.slice(1).join(' '));
+					break;
+				}
+				//money
+				case 'give': {
+					if (!isIntOrFloat(commandParts[1])) {
+						message.reply(":woman_gesturing_no: Đừng có mà nhập linh tinh cho bò nè! Nhập số >0 thôi.");
+						break;
+					}
+					await give(client, message, parseFloat(commandParts[1]), commandParts[2], commandParts.length >= 3 ? rawCommandParts.slice(3).join(' ') : null);
+					break;
+				}
+				case 'top': {
+					await moneyStat(client, message);
+					break;
+				}
+
 				case 'sell': {
 					await sell(message, commandParts[1]);
 					break;
 				}
-				case 'info': {
-					const embed = await informationEmbed(client) as unknown as APIEmbed | JSONEncodable<APIEmbed>;
-					message.channel.send({ embeds: [embed] });
-					break;
-				}
-				case 'help': {
-					const embed = await helpEmbed(client) as unknown as APIEmbed | JSONEncodable<APIEmbed>;
-					message.channel.send({ embeds: [embed] });
-					break;
-				}
-
+				//cow
 				case 'vatsua':
 				case 'milk':
 				case 'm': {
 					await milk(message);
 					break;
 				}
-
 				case 'xemkho':
 				case 'inv': {
 					await inventory(client, message);
 					break;
 				}
-
 				case 'anco':
 				case 'eat': {
-					await feed(message);
+					await eat(message);
 					break;
 				}
 				case 'xemmeo':
@@ -136,7 +133,7 @@ client.on(Events.MessageCreate, async (message: Message) => {
 				}
 
 				case 'happy': {
-					await getComedy(message);
+					await getJoke(message);
 					break;
 				}
 				case 'verify-joke': {
@@ -150,7 +147,7 @@ client.on(Events.MessageCreate, async (message: Message) => {
 		console.log(e)
 		message.channel.sendTyping();
 		message.reply(
-			'Ôi không! Hình như bò đang không ổn, chờ thằng chủ bỏ fix lại nhé :">'
+			'Ôi không! Hình như bò đang không ổn, chờ thằng chủ bò fix lại nhé :">'
 		);
 	}
 
@@ -167,23 +164,45 @@ client.on(Events.InteractionCreate, interaction => {
 		case 'g9':
 			executes.goodnightSlashCommand.execute(interaction)
 			break;
+		//server
 		case 'help':
-			executes.helpCommand.execute(interaction, client);
+			executes.helpSlash.execute(interaction, client);
 			break;
 		case 's':
-			executes.serverSlashCommand.execute(interaction, client);
+			executes.serverListSlash.execute(interaction, client);
 			break;
+		//cow
 		case 'milk':
-			executes.milkSlashCommand.execute(interaction);
+			executes.milkSlash.execute(interaction);
 			break;
+		case 'eat':
+			executes.eatSlash.execute(interaction);
+			break;
+		case 'inv':
+			executes.invSlash.execute(client, interaction);
+			break;
+		//money
 		case 'sell':
-			executes.sellSlashCommand.execute(interaction);
+			executes.sellSlash.execute(interaction);
 			break;
+		case 'transfer':
+			executes.giveSlash.execute(client, interaction);
+			break;
+		case 'top':
+			executes.topSlash.execute(client, interaction);
+			break;
+		//relax
 		case 'happy':
-			executes.getComedyCommand.execute(interaction);
+			executes.getJokeSlash.execute(interaction);
 			break;
 		case 'cow':
-			executes.cowCommand.execute(interaction);
+			executes.cowSlash.execute(interaction);
+			break;
+		case 'cat':
+			executes.catSlash.execute(interaction);
+			break;
+		case 'chanle':
+			executes.evenOddSlash.execute(interaction);
 			break;
 		default:
 			break;

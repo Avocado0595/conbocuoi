@@ -3,3 +3,4 @@ export { default as getJoke } from './getJoke';;
 export { default as listServer } from './listServer';
 export { default as randomCat } from './randomCat';
 export { default as randomImage } from './randomImage';
+export { default as evenOdd } from './evenOdd';

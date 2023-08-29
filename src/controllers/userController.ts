@@ -28,53 +28,52 @@ export const addUser = async (name: string, id: string, milk: number) => {
         totalMilk: milk,
     };
     const newUser = new UserModel(user);
-    newUser.save();
+    await newUser.save();
     return newUser;
 };
 
 export const updateUser = async (id: mongoose.Types.ObjectId, updateUser: any) => {
     await UserModel.findByIdAndUpdate(id, updateUser, { new: true });
 };
-export const getTopNUser = async (userId: string, page: number, client: any) => {
-    const userPerPage = 10;
-    const sortedUserList = await UserModel.find().sort({ totalMilk: -1 });
+/**
+ * @No_using_anymore
+ */
+// export const getTopNUser = async (userId: string, page: number, client: any) => {
+//     const userPerPage = 10;
+//     const sortedUserList = await UserModel.find().sort({ totalMilk: -1 });
 
-    const totalPage = Math.ceil(sortedUserList.length / userPerPage);
-    const n = page > totalPage ? totalPage : page;
-    const userRank = await getUserRank(userId, sortedUserList);
-    const startIndex = (n - 1) * userPerPage;
-    const endIndex = n * userPerPage;
-    const statRank = sortedUserList.slice(startIndex, endIndex);
-    let statBoard = '';
-    let fetchList = [];
-    for (let i = 0; i < statRank.length; i++) {
-        try {
-            const user = await client.users.fetch(statRank[i].userId);
-            fetchList.push(user);
-        } catch (error) {
-            console.error(`${statRank[i].userId}: ${error}`);
-        }
-    }
-    const statList = fetchList.filter((user) => !!user);
-    for (let i = 0; i < statList.length; i++) {
-        statBoard += `${startIndex + i + 1}. ${removeTag(statList[i].tag)} - ${roundDouble(statRank[i].totalMilk)
-            } lít\n`;
-    }
+//     const totalPage = Math.ceil(sortedUserList.length / userPerPage);
+//     const n = page > totalPage ? totalPage : page;
+//     const userRank = await getUserRank(userId, sortedUserList);
+//     const startIndex = (n - 1) * userPerPage;
+//     const endIndex = n * userPerPage;
+//     const statRank = sortedUserList.slice(startIndex, endIndex);
+//     let statBoard = '';
+//     let fetchList = [];
+//     for (let i = 0; i < statRank.length; i++) {
+//         try {
+//             const user = await client.users.fetch(statRank[i].userId);
+//             fetchList.push(user);
+//         } catch (error) {
+//             console.error(`${statRank[i].userId}: ${error}`);
+//         }
+//     }
+//     const statList = fetchList.filter((user) => !!user);
+//     for (let i = 0; i < statList.length; i++) {
+//         statBoard += `${startIndex + i + 1}. ${removeTag(statList[i].tag)} - ${roundDouble(statRank[i].totalMilk)
+//             } lít\n`;
+//     }
 
-    return { statBoard, userRank, totalPage };
-};
+//     return { statBoard, userRank, totalPage };
+// };
 
-
-export const getTopMoney = async (userId: string, page: number, client: any) => {
+export const getTopMoney = async (userId: string, client: any) => {
     const userPerPage = 10;
     const sortedUserList = await UserModel.find().sort({ money: -1 });
 
     const totalPage = Math.ceil(sortedUserList.length / userPerPage);
-    const n = page > totalPage ? totalPage : page;
-    const userRank = await getUserRank(userId, sortedUserList);
-    const startIndex = (n - 1) * userPerPage;
-    const endIndex = n * userPerPage;
-    const statRank = sortedUserList.slice(startIndex, endIndex);
+    const userRank = await getUserRank(userId, sortedUserList);;
+    const statRank = sortedUserList.slice(0, userPerPage);
     let statBoard = '';
     let fetchList = [];
     for (let i = 0; i < statRank.length; i++) {
@@ -87,7 +86,7 @@ export const getTopMoney = async (userId: string, page: number, client: any) => 
     }
     const statList = fetchList.filter((user) => !!user);
     for (let i = 0; i < statList.length; i++) {
-        statBoard += `${startIndex + i + 1}. ${removeTag(statList[i].tag)} - ${roundDouble(statRank[i].money)
+        statBoard += `${i + 1}. ${removeTag(statList[i].tag)} - ${statRank[i].money.toFixed(2)
             }cc\n`;
     }
 
@@ -196,28 +195,11 @@ export const sell = async (user: User, milk: Number) => {
     return { addedMoney: roundDouble(addedMoney), total: roundDouble(total) };
 }
 
-export const takeMoney = async (user: User) => {
-    const newMoney = user.money - config.imagePrice;
-    await UserModel.findByIdAndUpdate(
-        user._id,
-        { $set: { 'money': newMoney } },
-        { new: true }
-    );
-    return newMoney;
-}
 
-export const giveMoney = async (user: User, money: number) => {
-    await UserModel.findByIdAndUpdate(
-        user._id,
-        { $set: { 'money': user.money - money } },
-        { new: true }
-    );
 
-}
-
-export const addMoney = async (_id: string, money: number) => {
-    return await UserModel.findByIdAndUpdate(
-        _id,
+export const addMoney = async (userId: string, money: number) => {
+    return await UserModel.findOneAndUpdate(
+        { userId },
         { $inc: { 'money': money } },
         { new: true }
     );

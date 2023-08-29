@@ -17,12 +17,14 @@ const inventory = async (client: Client, message: Message | ChatInputCommandInte
             .setDescription(
                 '```md\n' + `Năng lượng: ${user.cow.strength.toFixed(2)}%\nSữa hôm nay: ${totalMilkToday.toFixed(2)}L\nSữa trong kho: ${user.totalMilk.toFixed(2)}L\nTiền: ${user.money.toFixed(2)}cc` + '```'
             )
-        message.channel.send({ embeds: [embed] });
+        message.reply({ embeds: [embed] });
+
     } else {
         message.reply(
-            'Bạn chưa vắt sữa! Hãy **b!m** để có sữa, rồi xem kho nhé :wink:'
+            'Bạn chưa vắt sữa! Hãy **/milk** để có sữa, rồi xem kho nhé :wink:'
         );
     }
+
 };
 
 export default inventory;

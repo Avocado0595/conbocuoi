@@ -7,7 +7,7 @@ const data = new SlashCommandBuilder()
     .setDescription('Đọc kỹ HDSD trước khi dùng');
 
 async function execute(interaction: ChatInputCommandInteraction, client: Client) {
-    await help(client)
+    await help(interaction, client)
 }
 
-export { data, execute };
+export default { data, execute };

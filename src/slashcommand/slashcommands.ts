@@ -1,29 +1,40 @@
 import * as pingSlashCommand from './ping';
 import * as goodnightSlashCommand from './goodnight';
-import * as serverSlashCommand from './server/serever-slash';
-import * as milkSlashCommand from './milk';
-import * as sellSlashCommand from './trading/sell'
-import * as getComedyCommand from './relax/getComedy'
-import * as cowCommand from './relax/cow'
-import * as helpCommand from './server/help'
+import { serverListSlash, helpSlash } from './server';
+import { milkSlash, eatSlash, invSlash } from './cow';
+import { sellSlash, topSlash, giveSlash } from './money'
+import { getJokeSlash, cowSlash, catSlash, evenOddSlash } from './relax'
+
 export const commands = [
     pingSlashCommand.data.toJSON(),
     goodnightSlashCommand.data.toJSON(),
-    serverSlashCommand.data.toJSON(),
-    milkSlashCommand.data.toJSON(),
-    sellSlashCommand.data.toJSON(),
-    getComedyCommand.data.toJSON(),
-    cowCommand.data.toJSON(),
-    helpCommand.data.toJSON()
+    serverListSlash.data.toJSON(),
+    milkSlash.data.toJSON(),
+    sellSlash.data.toJSON(),
+    giveSlash.data.toJSON(),
+    topSlash.data.toJSON(),
+    getJokeSlash.data.toJSON(),
+    cowSlash.data.toJSON(),
+    catSlash.data.toJSON(),
+    evenOddSlash.data.toJSON(),
+    eatSlash.data.toJSON(),
+    invSlash.data.toJSON(),
+    helpSlash.data.toJSON()
 ];
 
 export const executes = {
     pingSlashCommand,
     goodnightSlashCommand,
-    serverSlashCommand,
-    milkSlashCommand,
-    sellSlashCommand,
-    getComedyCommand,
-    cowCommand,
-    helpCommand
+    serverListSlash,
+    milkSlash,
+    sellSlash,
+    giveSlash,
+    topSlash,
+    getJokeSlash,
+    cowSlash,
+    catSlash,
+    evenOddSlash,
+    eatSlash,
+    invSlash,
+    helpSlash
 }
