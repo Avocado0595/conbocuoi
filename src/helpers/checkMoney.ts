@@ -3,7 +3,7 @@ import { getUser } from "../controllers/userController";
 import getMessageUser from "./getMessageUser";
 
 /**
- * check and take money
+ * check
  */
 export default async (message: Message | ChatInputCommandInteraction, amount: number) => {
     const messUser = getMessageUser(message);

@@ -196,7 +196,6 @@ export const sell = async (user: User, milk: Number) => {
 }
 
 
-
 export const addMoney = async (userId: string, money: number) => {
     return await UserModel.findOneAndUpdate(
         { userId },

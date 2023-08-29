@@ -5,7 +5,7 @@ import config from './config/config';
 import express from 'express';
 import cors from 'cors';
 import { commands, executes } from './slashcommand/slashcommands';
-import { listServer, randomCat, randomImage } from './commands/relax';
+import { evenOdd, listServer, randomCat, randomImage } from './commands/relax';
 import { isIntOrFloat } from './helpers';
 import { decMilk } from './controllers/userController';
 import { addJoke, getJoke } from './commands/relax';
@@ -79,7 +79,7 @@ client.on(Events.MessageCreate, async (message: Message) => {
 				}
 				//relax
 				case 'joke': {
-					await addJoke(message, rawCommandParts.slice(1).join(' '));
+					await addJoke(client, message, rawCommandParts.slice(1).join(' '));
 					break;
 				}
 				//money
@@ -131,7 +131,10 @@ client.on(Events.MessageCreate, async (message: Message) => {
 					await getRatio(message);
 					break;
 				}
-
+				case 'chanle': {
+					await evenOdd(message, commandParts[1], commandParts[2]);
+					break;
+				}
 				case 'happy': {
 					await getJoke(message);
 					break;

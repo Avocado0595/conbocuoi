@@ -1,7 +1,7 @@
 import { ChatInputCommandInteraction, EmbedBuilder, Message } from 'discord.js';
 import { getRandomImage } from '../../controllers/imageController';
 import { ImageTypes } from '../../models/imageModel';
-import { getUser } from '../../controllers/userController';
+import { addMoney, getUser } from '../../controllers/userController';
 import config from '../../config/config';
 import { getMessageUser, checkMoney } from '../../helpers';
 
@@ -11,6 +11,7 @@ const randomImage = async (message: Message | ChatInputCommandInteraction, type:
         return;
     const messUser = getMessageUser(message);
     const imgLink = await getRandomImage(type);
+    await addMoney(messUser.id, -config.imagePrice);
     const userUpdated = await getUser(messUser.id);
     const embed = new EmbedBuilder()
         .setColor([0, 153, 255])

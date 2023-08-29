@@ -18,4 +18,5 @@ export default {
 	getJokePrice: 15,
 	addJokePrice: 30,
 	minCowStrength: 45,
+	adminSavedChannel: '1146073709023609003'
 };
