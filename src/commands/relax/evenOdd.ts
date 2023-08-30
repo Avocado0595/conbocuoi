@@ -36,19 +36,13 @@ const evenOdd = async (message: Message | ChatInputCommandInteraction, choice: s
     /**
      * TODO: rút gọn chỗ này sau
      */
-    if (isEven === Boolean(bchoiceIsEven)) {
-        await addMoney(user.userId, amount);
-        const winTerms = ['Ghê quá nha!', 'Quá đỉnh!', 'Bạn là nhất!', 'Chúa tể may mắn!', 'Liều ăn nhiều!'];
-        await message.reply(`Bạn chọn: ${choice === 'chan' ? 'chẳn' : 'lẻ'}. Kết quả xổ số: ${x}.\n${winTerms[randomInt(0, winTerms.length - 1)]} +${amount}cc`);
-        return;
-    }
-    else {
-        await addMoney(user.userId, -amount);
-        const loseTerms = ['Bạn gà vãi!', 'Quá íu!', 'Đen thôi!', 'Hehe boiz!']
-        await message.reply(`Bạn chọn: ${choice === 'chan' ? 'chẳn' : 'lẻ'}. Kết quả xổ số: ${x}.\n${loseTerms[randomInt(0, loseTerms.length - 1)]} -${amount}cc`);
-        return;
-    };
-
+    const isWin = isEven === Boolean(bchoiceIsEven);
+    const winTerms = ['Ghê quá nha!', 'Quá đỉnh!', 'Bạn là nhất!', 'Chúa tể may mắn!', 'Liều ăn nhiều!'];
+    const loseTerms = ['Bạn gà vãi!', 'Quá íu!', 'Đen thôi!', 'Hehe boiz!']
+    const k = isWin ? 1 : -1;
+    await addMoney(user.userId, k * amount);
+    await message.reply(`Bạn chọn: ${bchoiceIsEven === 1 ? 'chẳn' : 'lẻ'}. Kết quả xổ số: ${x}.\n${isWin ? winTerms[randomInt(0, winTerms.length - 1)] : loseTerms[randomInt(0, loseTerms.length - 1)]} ${isWin ? '+' : '-'}${amount.toFixed(2)}cc`);
+    return;
 };
 
 export default evenOdd;
