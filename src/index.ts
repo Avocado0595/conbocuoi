@@ -15,6 +15,7 @@ import { adminchat, setRatio, verifyJoke } from './commands/admin'
 import { getRatio, give, moneyStat, sell } from './commands/money';
 import { help } from './commands';
 import informationEmbed from './commands/information';
+import dictionary from './commands/relax/dictionary';
 
 const client = new Client({
 	intents: [
@@ -82,6 +83,10 @@ client.on(Events.MessageCreate, async (message: Message) => {
 					await addJoke(client, message, rawCommandParts.slice(1).join(' '));
 					break;
 				}
+				case 'd': {
+					await dictionary(commandParts[1], message);
+					break;
+				}
 				//money
 				case 'give': {
 					if (!isIntOrFloat(commandParts[1])) {
@@ -100,6 +105,7 @@ client.on(Events.MessageCreate, async (message: Message) => {
 					await sell(message, commandParts[1]);
 					break;
 				}
+
 				//cow
 				case 'vatsua':
 				case 'milk':
@@ -206,6 +212,9 @@ client.on(Events.InteractionCreate, interaction => {
 			break;
 		case 'chanle':
 			executes.evenOddSlash.execute(interaction);
+			break;
+		case 'dict':
+			executes.dictionarySlash.execute(interaction);
 			break;
 		default:
 			break;

@@ -3,7 +3,7 @@ import * as goodnightSlashCommand from './goodnight';
 import { serverListSlash, helpSlash } from './server';
 import { milkSlash, eatSlash, invSlash } from './cow';
 import { sellSlash, topSlash, giveSlash } from './money'
-import { getJokeSlash, cowSlash, catSlash, evenOddSlash } from './relax'
+import { getJokeSlash, cowSlash, catSlash, evenOddSlash, dictionarySlash } from './relax'
 
 export const commands = [
     pingSlashCommand.data.toJSON(),
@@ -19,7 +19,9 @@ export const commands = [
     evenOddSlash.data.toJSON(),
     eatSlash.data.toJSON(),
     invSlash.data.toJSON(),
-    helpSlash.data.toJSON()
+    helpSlash.data.toJSON(),
+    dictionarySlash.data.toJSON(),
+
 ];
 
 export const executes = {
@@ -36,5 +38,6 @@ export const executes = {
     evenOddSlash,
     eatSlash,
     invSlash,
-    helpSlash
+    helpSlash,
+    dictionarySlash
 }
